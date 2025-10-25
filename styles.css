@@ -119,6 +119,28 @@ a {
     color: #667eea;
 }
 
+.publications-link {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.medium-link {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.medium-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2rem;
