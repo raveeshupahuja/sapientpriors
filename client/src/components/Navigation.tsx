@@ -34,6 +34,13 @@ export default function Navigation() {
             </Button>
             <Button
               variant="ghost"
+              onClick={() => scrollToSection('research')}
+              data-testid="link-research"
+            >
+              Research
+            </Button>
+            <Button
+              variant="ghost"
               onClick={() => scrollToSection('product')}
               data-testid="link-product"
             >
@@ -82,6 +89,14 @@ export default function Navigation() {
               data-testid="link-vision-mobile"
             >
               Vision
+            </Button>
+            <Button
+              variant="ghost"
+              className="w-full justify-start"
+              onClick={() => scrollToSection('research')}
+              data-testid="link-research-mobile"
+            >
+              Research
             </Button>
             <Button
               variant="ghost"
