@@ -5,7 +5,7 @@ export default function ResearchSection() {
   const challenges = [
     "Learn from every interaction and experience",
     "Adapt their behavior based on feedback and outcomes",
-    "Transfer knowledge across different tasks and domains",
+    "Transfer knowledge and skills across different environments, tasks, and domains",
     "Improve their performance over extended periods of operation",
     "Operate autonomously with minimal human intervention"
   ];
