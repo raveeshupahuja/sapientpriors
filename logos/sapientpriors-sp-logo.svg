@@ -13,6 +13,9 @@
     </filter>
   </defs>
 
+  <!-- Black background -->
+  <rect width="800" height="800" fill="#000000"/>
+
   <!-- S Letter (Left side) -->
   <!-- Top section of S -->
   <line x1="180" y1="350" x2="290" y2="235" stroke="url(#blueToViolet)" stroke-width="8" stroke-linecap="round"/>
