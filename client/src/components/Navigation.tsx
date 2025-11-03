@@ -27,10 +27,12 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" asChild>
-            <button className="flex items-center gap-2 hover-elevate rounded-md px-2 py-1 -ml-2 cursor-pointer bg-transparent border-none">
-              <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">SP</span>
-              </div>
+            <button className="flex items-center gap-3 hover-elevate rounded-md px-2 py-1 -ml-2 cursor-pointer bg-transparent border-none">
+              <img 
+                src="/sapientpriors-sp-logo.svg" 
+                alt="SapientPriors Logo" 
+                className="w-10 h-10"
+              />
               <span className="font-bold text-lg">SapientPriors</span>
             </button>
           </Link>
