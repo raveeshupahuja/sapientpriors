@@ -128,9 +128,10 @@ export default function Careers() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="name">Full Name *</Label>
+                    <Label htmlFor="name" data-testid="label-name">Full Name *</Label>
                     <Input
                       id="name"
+                      name="name"
                       required
                       placeholder="John Doe"
                       value={formData.name}
@@ -140,9 +141,10 @@ export default function Careers() {
                   </div>
 
                   <div>
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="email" data-testid="label-email">Email *</Label>
                     <Input
                       id="email"
+                      name="email"
                       type="email"
                       required
                       placeholder="john@example.com"
@@ -155,9 +157,10 @@ export default function Careers() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="phone">Phone Number</Label>
+                    <Label htmlFor="phone" data-testid="label-phone">Phone Number</Label>
                     <Input
                       id="phone"
+                      name="phone"
                       type="tel"
                       placeholder="+1 (555) 123-4567"
                       value={formData.phone}
@@ -167,9 +170,10 @@ export default function Careers() {
                   </div>
 
                   <div>
-                    <Label htmlFor="linkedin">LinkedIn Profile</Label>
+                    <Label htmlFor="linkedin" data-testid="label-linkedin">LinkedIn Profile</Label>
                     <Input
                       id="linkedin"
+                      name="linkedin"
                       type="url"
                       placeholder="https://linkedin.com/in/yourprofile"
                       value={formData.linkedin}
@@ -180,9 +184,10 @@ export default function Careers() {
                 </div>
 
                 <div>
-                  <Label htmlFor="role">Role of Interest *</Label>
+                  <Label htmlFor="role" data-testid="label-role">Role of Interest *</Label>
                   <Input
                     id="role"
+                    name="role"
                     required
                     placeholder="e.g., Machine Learning Engineer, Research Scientist"
                     value={formData.role}
@@ -192,9 +197,10 @@ export default function Careers() {
                 </div>
 
                 <div>
-                  <Label htmlFor="experience">Years of Experience</Label>
+                  <Label htmlFor="experience" data-testid="label-experience">Years of Experience</Label>
                   <Input
                     id="experience"
+                    name="experience"
                     placeholder="e.g., 5 years"
                     value={formData.experience}
                     onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
@@ -203,9 +209,10 @@ export default function Careers() {
                 </div>
 
                 <div>
-                  <Label htmlFor="coverLetter">Cover Letter / Why SapientPriors? *</Label>
+                  <Label htmlFor="coverLetter" data-testid="label-cover-letter">Cover Letter / Why SapientPriors? *</Label>
                   <Textarea
                     id="coverLetter"
+                    name="coverLetter"
                     required
                     rows={6}
                     placeholder="Tell us about yourself, your experience, and why you're interested in joining SapientPriors..."
@@ -216,15 +223,16 @@ export default function Careers() {
                 </div>
 
                 <div>
-                  <Label htmlFor="resume">Resume / CV</Label>
+                  <Label htmlFor="resume" data-testid="label-resume">Resume / CV</Label>
                   <Input
                     id="resume"
+                    name="resume"
                     type="file"
                     accept=".pdf,.doc,.docx"
                     onChange={(e) => setFormData({ ...formData, resume: e.target.files?.[0] || null })}
                     data-testid="input-resume"
                   />
-                  <p className="text-xs text-muted-foreground mt-2">
+                  <p className="text-xs text-muted-foreground mt-2" data-testid="text-resume-help">
                     Accepted formats: PDF, DOC, DOCX (Max 5MB)
                   </p>
                 </div>
