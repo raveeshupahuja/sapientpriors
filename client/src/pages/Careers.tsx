@@ -5,13 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
-import { Loader2, Briefcase, Users, Zap, Target } from "lucide-react";
+import { Loader2, Briefcase, Users, Zap, Target, MapPin, Clock, ChevronDown, ChevronUp } from "lucide-react";
+import { jobs } from "@/data/jobs";
 
 export default function Careers() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [expandedJob, setExpandedJob] = useState<string | null>(null);
+  const [selectedRole, setSelectedRole] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -22,6 +26,15 @@ export default function Careers() {
     coverLetter: "",
     resume: null as File | null
   });
+
+  const handleApply = (jobTitle: string) => {
+    setSelectedRole(jobTitle);
+    setFormData({ ...formData, role: jobTitle });
+    const formElement = document.getElementById('application-form');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +68,7 @@ export default function Careers() {
           coverLetter: "",
           resume: null
         });
+        setSelectedRole("");
       } else {
         throw new Error('Submission failed');
       }
@@ -119,10 +133,128 @@ export default function Careers() {
               ))}
             </div>
 
-            <Card className="p-8 lg:p-12 max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold mb-2">Apply Now</h2>
+            <div className="mb-20">
+              <h2 className="text-3xl font-bold mb-8 text-center">Open Positions</h2>
+              <div className="space-y-6 max-w-5xl mx-auto">
+                {jobs.map((job) => (
+                  <Card key={job.id} className="overflow-hidden" data-testid={`job-card-${job.id}`}>
+                    <div className="p-6 lg:p-8">
+                      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-4">
+                        <div className="flex-1">
+                          <h3 className="text-2xl font-bold mb-3" data-testid={`job-title-${job.id}`}>
+                            {job.title}
+                          </h3>
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            <Badge variant="default" data-testid={`job-type-${job.id}`}>
+                              {job.type}
+                            </Badge>
+                            <Badge variant="outline" className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3" />
+                              {job.location}
+                            </Badge>
+                            {job.type === "Internship" && (
+                              <Badge variant="outline" className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                6-12 months
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-muted-foreground leading-relaxed">
+                            {job.description}
+                          </p>
+                        </div>
+                        <div className="flex gap-2 lg:flex-col">
+                          <Button
+                            onClick={() => handleApply(job.title)}
+                            data-testid={`button-apply-${job.id}`}
+                          >
+                            Apply Now
+                          </Button>
+                          <Button
+                            variant="outline"
+                            onClick={() => setExpandedJob(expandedJob === job.id ? null : job.id)}
+                            data-testid={`button-details-${job.id}`}
+                          >
+                            {expandedJob === job.id ? (
+                              <>
+                                <ChevronUp className="w-4 h-4 mr-2" />
+                                Less Details
+                              </>
+                            ) : (
+                              <>
+                                <ChevronDown className="w-4 h-4 mr-2" />
+                                More Details
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+
+                      {expandedJob === job.id && (
+                        <div className="mt-6 pt-6 border-t space-y-6" data-testid={`job-details-${job.id}`}>
+                          <div>
+                            <h4 className="font-semibold text-lg mb-3">Key Responsibilities</h4>
+                            <ul className="space-y-2">
+                              {job.responsibilities.map((item, idx) => (
+                                <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                  <span className="text-primary mt-1">•</span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div>
+                            <h4 className="font-semibold text-lg mb-3">Required Qualifications</h4>
+                            <ul className="space-y-2">
+                              {job.requirements.map((item, idx) => (
+                                <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                  <span className="text-primary mt-1">•</span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          {job.preferred && job.preferred.length > 0 && (
+                            <div>
+                              <h4 className="font-semibold text-lg mb-3">Preferred Qualifications</h4>
+                              <ul className="space-y-2">
+                                {job.preferred.map((item, idx) => (
+                                  <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                    <span className="text-primary mt-1">•</span>
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          <div>
+                            <h4 className="font-semibold text-lg mb-3">Benefits & Perks</h4>
+                            <ul className="space-y-2">
+                              {job.benefits.map((item, idx) => (
+                                <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                  <span className="text-primary mt-1">•</span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            <Card id="application-form" className="p-8 lg:p-12 max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold mb-2">Apply for a Position</h2>
               <p className="text-muted-foreground mb-8">
-                We're always looking for talented individuals passionate about AI research and development. Submit your application below.
+                {selectedRole 
+                  ? `Applying for: ${selectedRole}` 
+                  : "Fill out the form below to apply for any of our open positions."}
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -189,7 +321,7 @@ export default function Careers() {
                     id="role"
                     name="role"
                     required
-                    placeholder="e.g., Machine Learning Engineer, Research Scientist"
+                    placeholder="e.g., Machine Learning Engineer, Machine Learning Engineer Intern"
                     value={formData.role}
                     onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                     data-testid="input-role"
@@ -260,11 +392,11 @@ export default function Careers() {
               <p>
                 Questions about careers at SapientPriors? Email us at{' '}
                 <a
-                  href="mailto:raveeshupahuja@sapientpriors.com"
+                  href="mailto:careers@sapientpriors.com"
                   className="text-primary hover:underline"
                   data-testid="link-careers-email"
                 >
-                  raveeshupahuja@sapientpriors.com
+                  careers@sapientpriors.com
                 </a>
               </p>
             </div>
