@@ -84,20 +84,22 @@ export default function ResearchSection() {
         </div>
 
         <div className="mb-20">
-          <h3 className="text-3xl lg:text-4xl font-bold tracking-tight mb-6 text-center">
-            Continually Learning Agents
-          </h3>
-          <p className="text-base lg:text-lg text-muted-foreground mb-8 text-center max-w-4xl mx-auto">
-            Our primary research focus is building agents that can learn and improve continuously throughout their lifetime.
-          </p>
+          <div className="text-center max-w-4xl mx-auto mb-12">
+            <h3 className="text-3xl lg:text-4xl font-bold tracking-tight mb-6">
+              Continually Learning Agents
+            </h3>
+            <p className="text-base lg:text-lg text-muted-foreground">
+              Our primary research focus is building agents that can learn and improve continuously throughout their lifetime.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto mb-12">
-            <Card className="p-8">
+          <div className="max-w-6xl mx-auto mb-16">
+            <Card className="p-8 lg:p-10">
               <h4 className="text-2xl font-semibold mb-6">The Challenge</h4>
-              <p className="text-muted-foreground mb-6">
+              <p className="text-muted-foreground mb-6 max-w-3xl">
                 Traditional AI systems are static after training. They cannot adapt to new situations, learn from mistakes, or improve based on experience. We're working to change that by developing agents that:
               </p>
-              <ul className="space-y-3">
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {challenges.map((challenge, index) => (
                   <li key={index} className="flex items-start gap-3" data-testid={`challenge-${index}`}>
                     <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2.5 flex-shrink-0" />
@@ -106,31 +108,29 @@ export default function ResearchSection() {
                 ))}
               </ul>
             </Card>
+          </div>
 
-            <div>
-              <h4 className="text-2xl font-semibold mb-6">Our Approach</h4>
-              <p className="text-muted-foreground mb-8">
-                We're combining multiple research directions to achieve continual learning:
-              </p>
-              <div className="grid grid-cols-1 gap-4">
-                {approaches.map((approach, index) => (
-                  <Card 
-                    key={index} 
-                    className="p-6 hover-elevate" 
-                    data-testid={`approach-${index}`}
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <approach.icon className="w-5 h-5 text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <h5 className="font-semibold text-base mb-2">{approach.title}</h5>
-                        <p className="text-sm text-muted-foreground leading-relaxed">{approach.description}</p>
-                      </div>
+          <div className="max-w-6xl mx-auto">
+            <h4 className="text-2xl font-semibold mb-8 text-center">Our Approach</h4>
+            <p className="text-muted-foreground mb-10 text-center max-w-3xl mx-auto">
+              We're combining multiple research directions to achieve continual learning:
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {approaches.map((approach, index) => (
+                <Card 
+                  key={index} 
+                  className="p-6 hover-elevate" 
+                  data-testid={`approach-${index}`}
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                      <approach.icon className="w-6 h-6 text-primary" />
                     </div>
-                  </Card>
-                ))}
-              </div>
+                    <h5 className="font-semibold text-base mb-3">{approach.title}</h5>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{approach.description}</p>
+                  </div>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
