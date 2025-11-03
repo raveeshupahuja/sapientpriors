@@ -15,6 +15,11 @@ export default function Navigation() {
     }
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setMobileMenuOpen(false);
+  };
+
   const isHomePage = location === '/';
 
   return (
@@ -31,11 +36,21 @@ export default function Navigation() {
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
-            <Link href="/" asChild>
-              <Button variant="ghost" data-testid="link-home">
+            {isHomePage ? (
+              <Button
+                variant="ghost"
+                onClick={scrollToTop}
+                data-testid="link-home"
+              >
                 Home
               </Button>
-            </Link>
+            ) : (
+              <Link href="/" asChild>
+                <Button variant="ghost" onClick={scrollToTop} data-testid="link-home">
+                  Home
+                </Button>
+              </Link>
+            )}
             {isHomePage ? (
               <Button
                 variant="ghost"
@@ -106,16 +121,27 @@ export default function Navigation() {
 
         {mobileMenuOpen && (
           <div className="md:hidden py-4 space-y-2">
-            <Link href="/" asChild>
+            {isHomePage ? (
               <Button
                 variant="ghost"
                 className="w-full justify-start"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={scrollToTop}
                 data-testid="link-home-mobile"
               >
                 Home
               </Button>
-            </Link>
+            ) : (
+              <Link href="/" asChild>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={scrollToTop}
+                  data-testid="link-home-mobile"
+                >
+                  Home
+                </Button>
+              </Link>
+            )}
             {isHomePage ? (
               <Button
                 variant="ghost"
