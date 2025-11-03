@@ -6,7 +6,7 @@ export default function TeamSection() {
           Team
         </h2>
         <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
-          Our team consists of machine learning engineers with experience at leading technology companies including <span className="font-semibold text-foreground">Microsoft</span>, <span className="font-semibold text-foreground">Twitter</span>, and <span className="font-semibold text-foreground">Dropbox</span>, united by a shared vision of achieving human-level intelligence.
+          Our team consists of machine learning engineers with experience at leading technology companies including <span className="font-semibold text-foreground">Microsoft</span>, <span className="font-semibold text-foreground">Twitter</span>, and <span className="font-semibold text-foreground">Dropbox</span>, united by a shared vision of achieving continuously autonomous learning agents.
         </p>
       </div>
     </section>
