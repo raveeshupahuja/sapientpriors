@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { Brain, Target, Lightbulb, Zap, Users, Database, RefreshCw, Network, BookOpen, Sparkles, Shield } from "lucide-react";
+import { Brain, Target, Lightbulb, Zap, Users, Database, RefreshCw } from "lucide-react";
 
 export default function ResearchSection() {
   const challenges = [

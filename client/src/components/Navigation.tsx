@@ -31,6 +31,11 @@ export default function Navigation() {
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
+            <Link href="/" asChild>
+              <Button variant="ghost" data-testid="link-home">
+                Home
+              </Button>
+            </Link>
             {isHomePage ? (
               <Button
                 variant="ghost"
@@ -101,6 +106,16 @@ export default function Navigation() {
 
         {mobileMenuOpen && (
           <div className="md:hidden py-4 space-y-2">
+            <Link href="/" asChild>
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={() => setMobileMenuOpen(false)}
+                data-testid="link-home-mobile"
+              >
+                Home
+              </Button>
+            </Link>
             {isHomePage ? (
               <Button
                 variant="ghost"
