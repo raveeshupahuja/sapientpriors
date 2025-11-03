@@ -5,6 +5,7 @@ import PersonalizationSection from "@/components/PersonalizationSection";
 import ProductSection from "@/components/ProductSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import CodeExampleSection from "@/components/CodeExampleSection";
+import ApiDemoSection from "@/components/ApiDemoSection";
 import TeamSection from "@/components/TeamSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -20,6 +21,7 @@ export default function Home() {
         <ProductSection />
         <HowItWorksSection />
         <CodeExampleSection />
+        <ApiDemoSection />
         <TeamSection />
         <ContactSection />
       </main>
