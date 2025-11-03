@@ -32,33 +32,32 @@ export default function Navigation() {
 
           <div className="hidden md:flex items-center gap-1">
             {isHomePage ? (
-              <>
-                <Button
-                  variant="ghost"
-                  onClick={() => scrollToSection('vision')}
-                  data-testid="link-vision"
-                >
-                  Vision
-                </Button>
-                <Button
-                  variant="ghost"
-                  onClick={() => scrollToSection('product')}
-                  data-testid="link-product"
-                >
+              <Button
+                variant="ghost"
+                onClick={() => scrollToSection('product')}
+                data-testid="link-product"
+              >
+                Product
+              </Button>
+            ) : (
+              <Link href="/#product" asChild>
+                <Button variant="ghost" data-testid="link-product">
                   Product
                 </Button>
-                <Button
-                  variant="ghost"
-                  onClick={() => scrollToSection('team')}
-                  data-testid="link-team"
-                >
-                  Team
-                </Button>
-              </>
+              </Link>
+            )}
+            {isHomePage ? (
+              <Button
+                variant="ghost"
+                onClick={() => scrollToSection('team')}
+                data-testid="link-team"
+              >
+                Team
+              </Button>
             ) : (
-              <Link href="/" asChild>
-                <Button variant="ghost" data-testid="link-home">
-                  Home
+              <Link href="/#team" asChild>
+                <Button variant="ghost" data-testid="link-team">
+                  Team
                 </Button>
               </Link>
             )}
@@ -103,41 +102,44 @@ export default function Navigation() {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 space-y-2">
             {isHomePage ? (
-              <>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  onClick={() => scrollToSection('vision')}
-                  data-testid="link-vision-mobile"
-                >
-                  Vision
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  onClick={() => scrollToSection('product')}
-                  data-testid="link-product-mobile"
-                >
-                  Product
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  onClick={() => scrollToSection('team')}
-                  data-testid="link-team-mobile"
-                >
-                  Team
-                </Button>
-              </>
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={() => scrollToSection('product')}
+                data-testid="link-product-mobile"
+              >
+                Product
+              </Button>
             ) : (
-              <Link href="/" asChild>
+              <Link href="/#product" asChild>
                 <Button
                   variant="ghost"
                   className="w-full justify-start"
                   onClick={() => setMobileMenuOpen(false)}
-                  data-testid="link-home-mobile"
+                  data-testid="link-product-mobile"
                 >
-                  Home
+                  Product
+                </Button>
+              </Link>
+            )}
+            {isHomePage ? (
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={() => scrollToSection('team')}
+                data-testid="link-team-mobile"
+              >
+                Team
+              </Button>
+            ) : (
+              <Link href="/#team" asChild>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => setMobileMenuOpen(false)}
+                  data-testid="link-team-mobile"
+                >
+                  Team
                 </Button>
               </Link>
             )}
