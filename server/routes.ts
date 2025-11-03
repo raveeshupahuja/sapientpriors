@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import multer from "multer";
+import { Resend } from "resend";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -17,6 +18,9 @@ const upload = multer({
     }
   }
 });
+
+// Initialize Resend (will be undefined if API key not set)
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Personalization API Demo Endpoints
@@ -61,7 +65,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Careers Application Endpoint
-  app.post("/api/careers/apply", upload.single('resume'), (req: any, res) => {
+  app.post("/api/careers/apply", upload.single('resume'), async (req: any, res) => {
     // In a real application, this would:
     // 1. Validate the form data
     // 2. Store the application in a database
@@ -90,6 +94,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       coverLetter: coverLetter.substring(0, 50) + '...',
       resume: resume ? `${resume.originalname} (${resume.size} bytes)` : 'No resume uploaded'
     });
+
+    // Send email notification if Resend is configured
+    if (resend) {
+      try {
+        await resend.emails.send({
+          from: 'SapientPriors Careers <careers@sapientpriors.com>',
+          to: 'raveeshupahuja@sapientpriors.com',
+          subject: `New Job Application: ${role} - ${name}`,
+          html: `
+            <h2>New Job Application Received</h2>
+            <p><strong>Position:</strong> ${role}</p>
+            <p><strong>Applicant:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ''}
+            ${linkedin ? `<p><strong>LinkedIn:</strong> <a href="${linkedin}">${linkedin}</a></p>` : ''}
+            ${experience ? `<p><strong>Experience:</strong> ${experience}</p>` : ''}
+            
+            <h3>Cover Letter:</h3>
+            <p style="white-space: pre-wrap;">${coverLetter}</p>
+            
+            ${resume ? `<p><strong>Resume:</strong> ${resume.originalname} (${(resume.size / 1024).toFixed(2)} KB)</p>` : '<p><em>No resume attached</em></p>'}
+            
+            <hr>
+            <p style="color: #666; font-size: 12px;">This application was submitted via the SapientPriors careers page.</p>
+          `
+        });
+        console.log('Email notification sent successfully');
+      } catch (emailError) {
+        console.error('Failed to send email notification:', emailError);
+        // Don't fail the request if email fails
+      }
+    } else {
+      console.log('Resend not configured - skipping email notification');
+    }
 
     return res.status(200).json({
       success: true,
