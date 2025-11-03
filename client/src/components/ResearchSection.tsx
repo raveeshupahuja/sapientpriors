@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { Brain, Target, Lightbulb, Zap, Users, Database } from "lucide-react";
+import { Brain, Target, Lightbulb, Zap, Users, Database, RefreshCw, Network, BookOpen, Sparkles, Shield } from "lucide-react";
 
 export default function ResearchSection() {
   const researchAreas = [
@@ -45,24 +45,29 @@ export default function ResearchSection() {
 
   const approaches = [
     {
+      icon: RefreshCw,
       title: "Online Learning",
-      description: "Updating models in real-time from streaming data"
+      description: "Updating models in real-time from streaming data, enabling continuous adaptation"
     },
     {
+      icon: BookOpen,
       title: "Meta-Learning",
-      description: "Teaching agents how to learn efficiently"
+      description: "Teaching agents how to learn efficiently across diverse tasks and domains"
     },
     {
+      icon: Database,
       title: "Memory Systems",
       description: "Developing architectures that maintain and utilize long-term knowledge"
     },
     {
+      icon: Sparkles,
       title: "Personalization",
-      description: "Adapting to individual users and contexts"
+      description: "Adapting to individual users and contexts for tailored experiences"
     },
     {
+      icon: Shield,
       title: "Robust Reasoning",
-      description: "Building reliable decision-making under uncertainty"
+      description: "Building reliable decision-making under uncertainty and evolving conditions"
     }
   ];
 
@@ -102,20 +107,31 @@ export default function ResearchSection() {
               </ul>
             </Card>
 
-            <Card className="p-8">
+            <div>
               <h4 className="text-2xl font-semibold mb-6">Our Approach</h4>
-              <p className="text-muted-foreground mb-6">
+              <p className="text-muted-foreground mb-8">
                 We're combining multiple research directions to achieve continual learning:
               </p>
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-4">
                 {approaches.map((approach, index) => (
-                  <div key={index} data-testid={`approach-${index}`}>
-                    <h5 className="font-semibold text-sm lg:text-base mb-1">{approach.title}</h5>
-                    <p className="text-sm text-muted-foreground">{approach.description}</p>
-                  </div>
+                  <Card 
+                    key={index} 
+                    className="p-6 hover-elevate" 
+                    data-testid={`approach-${index}`}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <approach.icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <h5 className="font-semibold text-base mb-2">{approach.title}</h5>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{approach.description}</p>
+                      </div>
+                    </div>
+                  </Card>
                 ))}
               </div>
-            </Card>
+            </div>
           </div>
         </div>
 
