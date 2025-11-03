@@ -2,39 +2,6 @@ import { Card } from "@/components/ui/card";
 import { Brain, Target, Lightbulb, Zap, Users, Database, RefreshCw, Network, BookOpen, Sparkles, Shield } from "lucide-react";
 
 export default function ResearchSection() {
-  const researchAreas = [
-    {
-      icon: Brain,
-      title: "Meta-Learning",
-      description: "Enabling models to learn how to learn, adapting quickly to new tasks and domains. This is fundamental to building agents that can continuously acquire new skills and knowledge efficiently."
-    },
-    {
-      icon: Target,
-      title: "Reasoning & Inference",
-      description: "Developing advanced reasoning capabilities through reinforcement learning. Agents need robust reasoning to make decisions and learn from complex environments."
-    },
-    {
-      icon: Lightbulb,
-      title: "Self-Aware Systems",
-      description: "Building models with calibrated confidence and uncertainty quantification. Continual learning requires knowing what you know and what you need to learn."
-    },
-    {
-      icon: Zap,
-      title: "Efficient Learning",
-      description: "Developing scalable and cost-effective training methods for advanced AI systems. Continual learning must be practical and sustainable for real-world deployment."
-    },
-    {
-      icon: Users,
-      title: "Personalization",
-      description: "Creating systems that adapt to individual users and contexts. Personalization is a key capability for agents that learn continuously in diverse environments."
-    },
-    {
-      icon: Database,
-      title: "Memory & Knowledge Retention",
-      description: "Developing architectures that can maintain long-term knowledge while continuing to learn new information without catastrophic forgetting."
-    }
-  ];
-
   const challenges = [
     "Learn from every interaction and experience",
     "Adapt their behavior based on feedback and outcomes",
@@ -43,31 +10,41 @@ export default function ResearchSection() {
     "Operate autonomously with minimal human intervention"
   ];
 
-  const approaches = [
+  const researchFocus = [
     {
       icon: RefreshCw,
       title: "Online Learning",
-      description: "Updating models in real-time from streaming data, enabling continuous adaptation"
+      description: "Developing methods for real-time model updates from streaming data, enabling agents to continuously adapt and improve from each interaction."
     },
     {
-      icon: BookOpen,
+      icon: Brain,
       title: "Meta-Learning",
-      description: "Teaching agents how to learn efficiently across diverse tasks and domains"
+      description: "Teaching models how to learn efficiently, enabling rapid adaptation to new tasks and domains while retaining previously acquired knowledge."
     },
     {
       icon: Database,
-      title: "Memory Systems",
-      description: "Developing architectures that maintain and utilize long-term knowledge"
+      title: "Memory & Knowledge Retention",
+      description: "Building architectures that maintain long-term knowledge while learning new information, preventing catastrophic forgetting in continual learning scenarios."
     },
     {
-      icon: Sparkles,
+      icon: Target,
+      title: "Reasoning & Inference",
+      description: "Advancing reasoning capabilities through reinforcement learning to enable robust decision-making in complex, evolving environments."
+    },
+    {
+      icon: Lightbulb,
+      title: "Self-Aware Systems",
+      description: "Creating models with calibrated confidence and uncertainty quantification that understand their own limitations and learning needs."
+    },
+    {
+      icon: Users,
       title: "Personalization",
-      description: "Adapting to individual users and contexts for tailored experiences"
+      description: "Developing systems that adapt to individual users and contexts, creating tailored experiences through continuous learning from user interactions."
     },
     {
-      icon: Shield,
-      title: "Robust Reasoning",
-      description: "Building reliable decision-making under uncertainty and evolving conditions"
+      icon: Zap,
+      title: "Efficient Learning",
+      description: "Creating scalable and cost-effective training methods that make continual learning practical and sustainable for real-world deployment."
     }
   ];
 
@@ -93,7 +70,7 @@ export default function ResearchSection() {
             </p>
           </div>
 
-          <div className="max-w-6xl mx-auto mb-16">
+          <div className="max-w-6xl mx-auto">
             <Card className="p-8 lg:p-10">
               <h4 className="text-2xl font-semibold mb-6">The Challenge</h4>
               <p className="text-muted-foreground mb-6 max-w-3xl">
@@ -109,42 +86,23 @@ export default function ResearchSection() {
               </ul>
             </Card>
           </div>
-
-          <div className="max-w-6xl mx-auto">
-            <h4 className="text-2xl font-semibold mb-8 text-center">Our Approach</h4>
-            <p className="text-muted-foreground mb-10 text-center max-w-3xl mx-auto">
-              We're combining multiple research directions to achieve continual learning:
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {approaches.map((approach, index) => (
-                <Card 
-                  key={index} 
-                  className="p-6 hover-elevate" 
-                  data-testid={`approach-${index}`}
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                      <approach.icon className="w-6 h-6 text-primary" />
-                    </div>
-                    <h5 className="font-semibold text-base mb-3">{approach.title}</h5>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{approach.description}</p>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </div>
         </div>
 
         <div>
-          <h3 className="text-3xl lg:text-4xl font-bold tracking-tight mb-12 text-center">
-            Research Areas
-          </h3>
+          <div className="text-center max-w-4xl mx-auto mb-12">
+            <h3 className="text-3xl lg:text-4xl font-bold tracking-tight mb-6">
+              Our Research Focus
+            </h3>
+            <p className="text-base lg:text-lg text-muted-foreground">
+              We're advancing the science of continual learning through multiple interconnected research directions.
+            </p>
+          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {researchAreas.map((area, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {researchFocus.map((area, index) => (
               <Card
                 key={index}
-                className="p-8 hover-elevate"
+                className="p-6 lg:p-8 hover-elevate"
                 data-testid={`research-area-${index}`}
               >
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
