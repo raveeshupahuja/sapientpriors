@@ -1,7 +1,6 @@
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import VisionSection from "@/components/VisionSection";
-import ResearchSection from "@/components/ResearchSection";
 import PersonalizationSection from "@/components/PersonalizationSection";
 import ProductSection from "@/components/ProductSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
@@ -18,7 +17,6 @@ export default function Home() {
       <main>
         <HeroSection />
         <VisionSection />
-        <ResearchSection />
         <PersonalizationSection />
         <ProductSection />
         <HowItWorksSection />

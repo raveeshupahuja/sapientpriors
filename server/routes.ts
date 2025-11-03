@@ -44,6 +44,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // Careers Application Endpoint
+  app.post("/api/careers/apply", (req, res) => {
+    // In a real application, this would:
+    // 1. Validate the form data
+    // 2. Store the application in a database
+    // 3. Send notification emails to the team
+    // 4. Send confirmation email to the applicant
+    
+    // For now, simulate successful submission
+    console.log('Career application received:', {
+      name: req.body.name,
+      email: req.body.email,
+      role: req.body.role
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Application received successfully. We'll be in touch soon!"
+    });
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
