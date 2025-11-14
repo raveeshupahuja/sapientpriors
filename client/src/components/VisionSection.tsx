@@ -16,7 +16,7 @@ export default function VisionSection() {
     },
     {
       icon: Zap,
-      text: "Operate autonomously without constant human supervision"
+      text: "Significantly reduce human intervention required"
     }
   ];
 
@@ -29,7 +29,7 @@ export default function VisionSection() {
               Our Vision
             </h2>
             <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
-              SapientPriors is working towards creating completely autonomous agents that can learn continuously from their environment, adapt to new challenges, and improve over time without human intervention.
+              SapientPriors is working towards creating agents that can learn continuously from their environment, adapt to new challenges, and improve over time while significantly reducing human intervention required.
             </p>
           </div>
           

@@ -9,10 +9,10 @@ export default function ApiDemoSection() {
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6">
-            Implicit Preference Learning
+            It Learns What You Don't Say
           </h2>
           <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
-            Watch how our API learns user preferences without explicit instructions, then confirms insights before applying them.
+            Watch how our API discovers implicit preferences from behavior, learns your style, and confirms insights before applying them.
           </p>
         </div>
 

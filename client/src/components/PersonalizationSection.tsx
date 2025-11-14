@@ -33,7 +33,7 @@ export default function PersonalizationSection() {
             Personalization as a Service
           </h2>
           <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
-            Our first step towards autonomous continually learning agents
+            Our first step towards continually learning agents that significantly reduce human intervention required
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export default function PersonalizationSection() {
         </div>
 
         <p className="text-base lg:text-lg text-muted-foreground max-w-4xl mx-auto mt-12 text-center">
-          This foundation in personalization is teaching us how to build systems that truly learn and adapt, bringing us closer to our vision of fully autonomous continually learning agents.
+          This foundation in personalization is teaching us how to build systems that truly learn and adapt, bringing us closer to our vision of continually learning agents that significantly reduce human intervention required.
         </p>
       </div>
     </section>

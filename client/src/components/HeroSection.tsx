@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import heroImage from '@assets/generated_images/AI_neural_network_hero_2e27284c.png';
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle2 } from "lucide-react";
 
 export default function HeroSection() {
   const scrollToContact = () => {
@@ -10,40 +11,40 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroImage})` }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
-      
-      <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 text-center">
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6">
-          Building Completely Autonomous Continually Learning Agents
+    <section className="relative min-h-[85vh] flex items-center justify-center bg-background">
+      <div className="max-w-3xl mx-auto px-6 lg:px-8 text-center">
+        {/* Main Headline */}
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight">
+          Make Your AI Smarter
+          <br />
+          <span className="text-muted-foreground">With Every Conversation</span>
         </h1>
-        <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto">
-          Making AI that learns, adapts, and improves continuously in the real world
-        </p>
         
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button
-            size="lg"
-            onClick={scrollToContact}
-            className="backdrop-blur-md bg-white/10 hover:bg-white/20 border border-white/20 text-white px-8 py-6 text-lg"
-            data-testid="button-hero-get-started"
-          >
-            Get Started
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={() => document.getElementById('product')?.scrollIntoView({ behavior: 'smooth' })}
-            className="backdrop-blur-md bg-white/5 hover:bg-white/10 border border-white/30 text-white px-8 py-6 text-lg"
-            data-testid="button-hero-learn-more"
-          >
-            Learn More
-          </Button>
+        {/* Subheadline */}
+        <p className="text-lg md:text-xl text-muted-foreground mb-4 max-w-2xl mx-auto">
+          AI that learns what your users mean, not just what they say
+        </p>
+        <p className="text-base text-muted-foreground/80 mb-8 max-w-xl mx-auto">
+          Learns explicit preferences, discovers implicit ones, and adapts to each user's unique style
+        </p>
+
+        {/* Trust Signal */}
+        <div className="flex items-center justify-center gap-2 mb-10">
+          <Badge variant="secondary" className="px-4 py-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" />
+            Trusted by companies like Ental.ai
+          </Badge>
         </div>
+        
+        {/* Single CTA */}
+        <Button
+          size="lg"
+          onClick={scrollToContact}
+          className="px-8 py-6 text-lg"
+          data-testid="button-hero-get-started"
+        >
+          Get Started
+        </Button>
       </div>
     </section>
   );

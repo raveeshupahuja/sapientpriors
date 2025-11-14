@@ -33,7 +33,7 @@ const context = await fetch(
   }
 ).then(res => res.json());
 
-// Use context in your LLM prompt
+// Use context in your AI prompt
 const response = await openai.chat.completions.create({
   messages: [
     { role: 'system', content: context.preferences },

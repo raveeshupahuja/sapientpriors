@@ -7,7 +7,7 @@ export default function ResearchSection() {
     "Adapt their behavior based on feedback and outcomes",
     "Transfer knowledge and skills across different environments, tasks, and domains",
     "Improve their performance over extended periods of operation",
-    "Operate autonomously with minimal human intervention"
+    "Significantly reduce human intervention required"
   ];
 
   const researchFocus = [
@@ -56,7 +56,7 @@ export default function ResearchSection() {
             Research
           </h2>
           <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
-            Exploring the foundations of continually learning autonomous agents
+            Exploring the foundations of continually learning agents that significantly reduce human intervention required
           </p>
         </div>
 

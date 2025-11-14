@@ -19,20 +19,20 @@ export default function HowItWorksSection() {
     },
     {
       number: "4",
-      title: "Your LLM uses this context to provide personalized responses",
+      title: "Your AI uses this context to provide personalized responses",
       description: "Inject learned context into prompts for tailored, consistent interactions"
     }
   ];
 
   return (
-    <section className="py-20 lg:py-32 bg-card">
+    <section id="how-it-works" className="py-20 lg:py-32 bg-card">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-6">
             How It Works
           </h2>
           <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
-            Simple API integration that adds continuous learning to any LLM application
+            Simple API integration that adds continuous learning to any AI application
           </p>
         </div>
 

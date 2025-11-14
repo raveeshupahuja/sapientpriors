@@ -1,11 +1,11 @@
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
-import VisionSection from "@/components/VisionSection";
-import PersonalizationSection from "@/components/PersonalizationSection";
 import ProductSection from "@/components/ProductSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import CodeExampleSection from "@/components/CodeExampleSection";
-import ApiDemoSection from "@/components/ApiDemoSection";
+import UseCasesSection from "@/components/UseCasesSection";
+import CaseStudySection from "@/components/CaseStudySection";
+import TestimonialsSection from "@/components/TestimonialsSection";
 import TeamSection from "@/components/TeamSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -33,12 +33,12 @@ export default function Home() {
       <Navigation />
       <main>
         <HeroSection />
-        <VisionSection />
-        <PersonalizationSection />
         <ProductSection />
         <HowItWorksSection />
         <CodeExampleSection />
-        <ApiDemoSection />
+        <UseCasesSection />
+        <CaseStudySection />
+        <TestimonialsSection />
         <TeamSection />
         <ContactSection />
       </main>
