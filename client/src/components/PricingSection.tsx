@@ -10,7 +10,7 @@ export default function PricingSection() {
       period: "forever",
       description: "Perfect for testing and small projects",
       features: [
-        "20,000 memories per month",
+        "20,000 interactions stored",
         "2,000 API calls per month",
         "Basic learning algorithms",
         "Email support",
@@ -25,7 +25,7 @@ export default function PricingSection() {
       period: "per month",
       description: "Best for growing applications",
       features: [
-        "200,000 memories per month",
+        "200,000 interactions stored",
         "20,000 API calls per month",
         "Advanced learning algorithms",
         "Priority email support",
@@ -40,7 +40,7 @@ export default function PricingSection() {
       period: "contact us",
       description: "For large-scale deployments",
       features: [
-        "Unlimited memories",
+        "Unlimited interactions stored",
         "Unlimited API calls",
         "Enterprise-grade learning",
         "24/7 dedicated support",
