@@ -1,7 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -83,16 +89,43 @@ export default function Navigation() {
                 </Button>
               </Link>
             )}
-            <Link href="/research" asChild>
-              <Button variant="ghost" data-testid="link-research">
-                Research
-              </Button>
-            </Link>
-            <Link href="/careers" asChild>
-              <Button variant="ghost" data-testid="link-careers">
-                Careers
-              </Button>
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" data-testid="link-resources">
+                  Resources <ChevronDown className="ml-1 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                {isHomePage ? (
+                  <>
+                    <DropdownMenuItem onClick={() => scrollToSection('use-cases')}>
+                      Use Cases
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => scrollToSection('privacy-api')}>
+                      API Documentation
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => scrollToSection('pricing')}>
+                      Pricing
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link href="/#use-cases">Use Cases</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/#privacy-api">API Documentation</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/#pricing">Pricing</Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
+                <DropdownMenuItem asChild>
+                  <Link href="/faq">FAQ</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             {isHomePage ? (
               <Button
                 onClick={() => scrollToSection('contact')}
@@ -186,26 +219,77 @@ export default function Navigation() {
                 </Button>
               </Link>
             )}
-            <Link href="/research" asChild>
-              <Button
-                variant="ghost"
-                className="w-full justify-start"
-                onClick={() => setMobileMenuOpen(false)}
-                data-testid="link-research-mobile"
-              >
-                Research
-              </Button>
-            </Link>
-            <Link href="/careers" asChild>
-              <Button
-                variant="ghost"
-                className="w-full justify-start"
-                onClick={() => setMobileMenuOpen(false)}
-                data-testid="link-careers-mobile"
-              >
-                Careers
-              </Button>
-            </Link>
+            <div className="border-t border-b py-2 my-2">
+              <p className="px-4 py-2 text-sm font-semibold text-muted-foreground">Resources</p>
+              {isHomePage ? (
+                <>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start pl-8"
+                    onClick={() => scrollToSection('use-cases')}
+                    data-testid="link-use-cases-mobile"
+                  >
+                    Use Cases
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start pl-8"
+                    onClick={() => scrollToSection('privacy-api')}
+                    data-testid="link-api-docs-mobile"
+                  >
+                    API Documentation
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start pl-8"
+                    onClick={() => scrollToSection('pricing')}
+                    data-testid="link-pricing-mobile"
+                  >
+                    Pricing
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/#use-cases" asChild>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start pl-8"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Use Cases
+                    </Button>
+                  </Link>
+                  <Link href="/#privacy-api" asChild>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start pl-8"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      API Documentation
+                    </Button>
+                  </Link>
+                  <Link href="/#pricing" asChild>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start pl-8"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Pricing
+                    </Button>
+                  </Link>
+                </>
+              )}
+              <Link href="/faq" asChild>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start pl-8"
+                  onClick={() => setMobileMenuOpen(false)}
+                  data-testid="link-faq-mobile"
+                >
+                  FAQ
+                </Button>
+              </Link>
+            </div>
             {isHomePage ? (
               <Button
                 className="w-full"

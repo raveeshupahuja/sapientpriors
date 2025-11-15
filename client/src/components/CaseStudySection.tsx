@@ -4,9 +4,9 @@ import { TrendingUp, Users, Clock } from "lucide-react";
 export default function CaseStudySection() {
   const challenges = [
     "Users had to repeatedly specify their financial goals and risk tolerance in every conversation",
-    "The assistant couldn't remember investment preferences or past advice given",
+    "The assistant couldn't remember past frustrations or preferences mentioned in earlier sessions",
     "No continuity between sessions led to inconsistent recommendations",
-    "Users felt like they were starting from scratch each time"
+    "Critical context like user pain points (e.g., complicated insurance claim processes) was lost between conversations"
   ];
 
   const solutions = [
@@ -108,9 +108,9 @@ export default function CaseStudySection() {
                   1
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">User sends message on WhatsApp</h4>
+                  <h4 className="font-semibold mb-2">User mentions insurance frustration early on</h4>
                   <p className="text-sm text-muted-foreground">
-                    "I want to invest $5,000 for my retirement in 20 years"
+                    "I'm really frustrated with my current insurance provider - their claim filing process takes forever and is so complicated"
                   </p>
                 </div>
               </div>
@@ -119,12 +119,12 @@ export default function CaseStudySection() {
                   2
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Ental.ai calls SapientPriors API</h4>
+                  <h4 className="font-semibold mb-2">System learns and stores user's pain points</h4>
                   <p className="text-sm text-muted-foreground font-mono">
-                    GET /api/context?user_id=xyz
+                    POST /api/learn
                   </p>
                   <p className="text-sm text-muted-foreground mt-2">
-                    Retrieves learned preferences: risk tolerance, investment history, communication style
+                    Stores: "User frustrated with current insurance claim filing process - prioritize easy claims when recommending insurance"
                   </p>
                 </div>
               </div>
@@ -133,9 +133,9 @@ export default function CaseStudySection() {
                   3
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Personalized response generated</h4>
+                  <h4 className="font-semibold mb-2">Weeks later: User asks about insurance renewal</h4>
                   <p className="text-sm text-muted-foreground">
-                    AI receives user context and generates advice tailored to their specific situation
+                    "It's time to renew my policy. What are my best options?"
                   </p>
                 </div>
               </div>
@@ -144,12 +144,12 @@ export default function CaseStudySection() {
                   4
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">System learns from interaction</h4>
+                  <h4 className="font-semibold mb-2">AI retrieves context and prioritizes easy claim filing</h4>
                   <p className="text-sm text-muted-foreground font-mono">
-                    POST /api/learn
+                    GET /api/context?user_id=xyz
                   </p>
                   <p className="text-sm text-muted-foreground mt-2">
-                    Updates user profile with new information for even better future recommendations
+                    The assistant remembers the earlier frustration and recommends insurance providers known for simple, fast claim processes—without the user having to repeat their concern
                   </p>
                 </div>
               </div>

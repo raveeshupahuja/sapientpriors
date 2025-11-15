@@ -1,5 +1,10 @@
-import { Card } from "@/components/ui/card";
 import { Mail, MessageSquare, Code, FileText, ShoppingCart, Headphones } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function UseCasesSection() {
   const useCases = [
@@ -7,37 +12,67 @@ export default function UseCasesSection() {
       icon: Mail,
       title: "Email Assistants",
       description: "Learn user tone, length preferences, and communication style to draft perfectly personalized emails",
-      apiFlow: "Send email interactions → Get learned preferences → Generate personalized drafts"
+      apiFlow: "Send email interactions → Get learned preferences → Generate personalized drafts",
+      example: {
+        scenario: "Professional email drafting assistant",
+        learns: ["Preferred email length (concise vs detailed)", "Tone preferences (formal vs casual)", "Common sign-offs and greetings", "Industry-specific terminology"],
+        outcome: "After 5-10 emails, the assistant automatically matches your writing style without any prompting"
+      }
     },
     {
       icon: MessageSquare,
       title: "Customer Support Chatbots",
       description: "Remember customer preferences, past issues, and communication style for consistent, personalized support",
-      apiFlow: "Log support conversations → Retrieve customer context → Provide tailored assistance"
+      apiFlow: "Log support conversations → Retrieve customer context → Provide tailored assistance",
+      example: {
+        scenario: "E-commerce support bot",
+        learns: ["Customer's past issues and resolutions", "Preferred communication style", "Product preferences and purchase history", "Common questions and concerns"],
+        outcome: "Provides context-aware support, referring to past conversations without asking customers to repeat themselves"
+      }
     },
     {
       icon: Code,
       title: "Code Assistants",
       description: "Adapt to developer preferences for languages, frameworks, patterns, and coding style over time",
-      apiFlow: "Track code interactions → Learn coding patterns → Suggest personalized solutions"
+      apiFlow: "Track code interactions → Learn coding patterns → Suggest personalized solutions",
+      example: {
+        scenario: "AI coding companion",
+        learns: ["Preferred programming language and framework", "Code style (functional vs OOP)", "Comment density and format", "Testing approach and libraries"],
+        outcome: "Suggests code that matches your exact style and preferences, reducing time spent on edits"
+      }
     },
     {
       icon: FileText,
       title: "Content Writers",
       description: "Master brand voice, formatting rules, and style guidelines to generate on-brand content consistently",
-      apiFlow: "Analyze content edits → Extract style patterns → Apply learned voice"
+      apiFlow: "Analyze content edits → Extract style patterns → Apply learned voice",
+      example: {
+        scenario: "Marketing content generator",
+        learns: ["Brand voice and tone guidelines", "Preferred heading structure", "Target audience language", "SEO keyword preferences"],
+        outcome: "Generates on-brand content that requires minimal editing, maintaining consistency across all materials"
+      }
     },
     {
       icon: ShoppingCart,
       title: "Shopping Assistants",
       description: "Understand dietary restrictions, size preferences, and shopping habits to recommend relevant products",
-      apiFlow: "Track purchases & feedback → Build preference profile → Filter recommendations"
+      apiFlow: "Track purchases & feedback → Build preference profile → Filter recommendations",
+      example: {
+        scenario: "Personalized shopping AI",
+        learns: ["Dietary restrictions (vegetarian, gluten-free, etc.)", "Size and fit preferences", "Favorite brands and price ranges", "Shopping frequency and timing"],
+        outcome: "Filters out irrelevant products automatically and suggests items that match your exact preferences"
+      }
     },
     {
       icon: Headphones,
       title: "Virtual Assistants",
       description: "Learn scheduling preferences, priority patterns, and workflow habits to provide proactive assistance",
-      apiFlow: "Monitor user actions → Identify behavioral patterns → Anticipate needs"
+      apiFlow: "Monitor user actions → Identify behavioral patterns → Anticipate needs",
+      example: {
+        scenario: "Personal productivity assistant",
+        learns: ["Meeting preferences (time of day, duration)", "Task prioritization patterns", "Work-life balance boundaries", "Communication channel preferences"],
+        outcome: "Proactively suggests schedule optimizations and task ordering based on your learned habits"
+      }
     }
   ];
 
@@ -56,24 +91,51 @@ export default function UseCasesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Accordion type="single" collapsible className="max-w-4xl mx-auto">
           {useCases.map((useCase, index) => (
-            <Card
-              key={index}
-              className="p-6 hover:shadow-lg transition-shadow"
-              data-testid={`use-case-card-${index}`}
-            >
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                <useCase.icon className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-lg font-semibold mb-3">{useCase.title}</h3>
-              <p className="text-sm text-muted-foreground mb-4">{useCase.description}</p>
-              <div className="pt-4 border-t border-border">
-                <p className="text-xs text-muted-foreground font-mono">{useCase.apiFlow}</p>
-              </div>
-            </Card>
+            <AccordionItem key={index} value={`item-${index}`} data-testid={`use-case-accordion-${index}`}>
+              <AccordionTrigger className="hover:no-underline">
+                <div className="flex items-center gap-4 text-left">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <useCase.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">{useCase.title}</h3>
+                    <p className="text-sm text-muted-foreground">{useCase.description}</p>
+                  </div>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="pl-14 pr-4 pb-4 space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Example: {useCase.example.scenario}</h4>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-semibold mb-2">What it learns:</p>
+                    <ul className="space-y-1">
+                      {useCase.example.learns.map((item, i) => (
+                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-primary mt-0.5">•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="bg-primary/5 rounded-lg p-4">
+                    <p className="text-sm font-semibold mb-1">Outcome:</p>
+                    <p className="text-sm text-muted-foreground">{useCase.example.outcome}</p>
+                  </div>
+
+                  <div className="pt-3 border-t border-border">
+                    <p className="text-xs text-muted-foreground font-mono">{useCase.apiFlow}</p>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
           ))}
-        </div>
+        </Accordion>
 
         <div className="mt-12 text-center">
           <p className="text-base lg:text-lg text-muted-foreground max-w-3xl mx-auto">

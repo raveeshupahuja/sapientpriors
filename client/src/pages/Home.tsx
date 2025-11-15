@@ -4,6 +4,8 @@ import ProductSection from "@/components/ProductSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import CodeExampleSection from "@/components/CodeExampleSection";
 import UseCasesSection from "@/components/UseCasesSection";
+import PricingSection from "@/components/PricingSection";
+import DataPrivacySection from "@/components/DataPrivacySection";
 import CaseStudySection from "@/components/CaseStudySection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import TeamSection from "@/components/TeamSection";
@@ -37,6 +39,8 @@ export default function Home() {
         <HowItWorksSection />
         <CodeExampleSection />
         <UseCasesSection />
+        <PricingSection />
+        <DataPrivacySection />
         <CaseStudySection />
         <TestimonialsSection />
         <TeamSection />
