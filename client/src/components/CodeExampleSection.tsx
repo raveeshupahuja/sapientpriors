@@ -1,167 +1,64 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { Copy, Check } from "lucide-react";
+import { ArrowRight, Code2, BookOpen, Rocket } from "lucide-react";
+import { Link } from "wouter";
 
 export default function CodeExampleSection() {
-  const [activeTab, setActiveTab] = useState<'javascript' | 'python' | 'curl'>('javascript');
-  const [copied, setCopied] = useState(false);
-
-  const codeExamples = {
-    javascript: `// Send user interaction to learn preferences
-await fetch('https://api.sapientpriors.com/learn', {
-  method: 'POST',
-  headers: {
-    'Authorization': 'Bearer YOUR_API_KEY',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    userId: 'user-123',
-    interaction: {
-      query: 'Write an email to the team',
-      response: 'Keep it concise please',
-      feedback: 'positive'
-    }
-  })
-});
-
-// Retrieve personalized context
-const context = await fetch(
-  'https://api.sapientpriors.com/context/user-123',
-  {
-    headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
-  }
-).then(res => res.json());
-
-// Use context in your AI prompt
-const response = await openai.chat.completions.create({
-  messages: [
-    { role: 'system', content: context.preferences },
-    { role: 'user', content: userMessage }
-  ]
-});`,
-    python: `# Send user interaction to learn preferences
-import requests
-
-requests.post(
-    'https://api.sapientpriors.com/learn',
-    headers={
-        'Authorization': 'Bearer YOUR_API_KEY',
-        'Content-Type': 'application/json'
-    },
-    json={
-        'userId': 'user-123',
-        'interaction': {
-            'query': 'Write an email to the team',
-            'response': 'Keep it concise please',
-            'feedback': 'positive'
-        }
-    }
-)
-
-# Retrieve personalized context
-response = requests.get(
-    'https://api.sapientpriors.com/context/user-123',
-    headers={'Authorization': 'Bearer YOUR_API_KEY'}
-)
-context = response.json()
-
-# Use context in your LLM prompt
-completion = openai.ChatCompletion.create(
-    messages=[
-        {'role': 'system', 'content': context['preferences']},
-        {'role': 'user', 'content': user_message}
-    ]
-)`,
-    curl: `# Send user interaction to learn preferences
-curl -X POST https://api.sapientpriors.com/learn \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "userId": "user-123",
-    "interaction": {
-      "query": "Write an email to the team",
-      "response": "Keep it concise please",
-      "feedback": "positive"
-    }
-  }'
-
-# Retrieve personalized context
-curl https://api.sapientpriors.com/context/user-123 \\
-  -H "Authorization: Bearer YOUR_API_KEY"`
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(codeExamples[activeTab]);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
-    <section className="py-20 lg:py-32">
+    <section className="py-20 lg:py-32 bg-gradient-to-b from-background to-muted/20">
       <div className="max-w-5xl mx-auto px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto mb-12">
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-6">
-            Simple Integration
+            Ready to Integrate?
           </h2>
           <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
-            Get started in minutes with our straightforward API
+            Explore our comprehensive API documentation with code examples, sample apps, and integration guides
           </p>
         </div>
 
-        <Card className="overflow-hidden">
-          <div className="flex items-center justify-between bg-muted px-6 py-4 border-b">
-            <div className="flex gap-2">
-              <Button
-                variant={activeTab === 'javascript' ? 'secondary' : 'ghost'}
-                size="sm"
-                onClick={() => setActiveTab('javascript')}
-                data-testid="tab-javascript"
-              >
-                JavaScript
-              </Button>
-              <Button
-                variant={activeTab === 'python' ? 'secondary' : 'ghost'}
-                size="sm"
-                onClick={() => setActiveTab('python')}
-                data-testid="tab-python"
-              >
-                Python
-              </Button>
-              <Button
-                variant={activeTab === 'curl' ? 'secondary' : 'ghost'}
-                size="sm"
-                onClick={() => setActiveTab('curl')}
-                data-testid="tab-curl"
-              >
-                cURL
-              </Button>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <Card className="p-6 hover:shadow-lg transition-shadow">
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <BookOpen className="w-6 h-6 text-primary" />
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleCopy}
-              data-testid="button-copy-code"
-            >
-              {copied ? (
-                <>
-                  <Check className="w-4 h-4 mr-2" />
-                  Copied
-                </>
-              ) : (
-                <>
-                  <Copy className="w-4 h-4 mr-2" />
-                  Copy
-                </>
-              )}
+            <h3 className="text-xl font-semibold mb-2">Core Concepts</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Understand the account hierarchy, two-step learning pattern, and how objectives guide the AI
+            </p>
+          </Card>
+
+          <Card className="p-6 hover:shadow-lg transition-shadow">
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <Code2 className="w-6 h-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">API Usage</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Step-by-step guide with code examples in JavaScript, Python, and cURL
+            </p>
+          </Card>
+
+          <Card className="p-6 hover:shadow-lg transition-shadow">
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <Rocket className="w-6 h-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Sample App</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Complete email copilot implementation showing real-world integration
+            </p>
+          </Card>
+        </div>
+
+        <div className="text-center">
+          <Link href="/api-docs">
+            <Button size="lg" className="text-lg px-8" data-testid="button-view-documentation">
+              View Full API Documentation
+              <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
-          </div>
-          <div className="p-6 bg-background">
-            <pre className="font-mono text-sm overflow-x-auto">
-              <code data-testid="code-example">{codeExamples[activeTab]}</code>
-            </pre>
-          </div>
-        </Card>
+          </Link>
+          <p className="mt-4 text-sm text-muted-foreground">
+            Complete with interactive examples, best practices, and FAQ
+          </p>
+        </div>
       </div>
     </section>
   );

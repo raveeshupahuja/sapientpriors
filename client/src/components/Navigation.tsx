@@ -101,26 +101,17 @@ export default function Navigation() {
                     <DropdownMenuItem onClick={() => scrollToSection('use-cases')}>
                       Use Cases
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => scrollToSection('privacy-api')}>
-                      API Documentation
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => scrollToSection('pricing')}>
-                      Pricing
-                    </DropdownMenuItem>
                   </>
                 ) : (
                   <>
                     <DropdownMenuItem asChild>
                       <Link href="/#use-cases">Use Cases</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/#privacy-api">API Documentation</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/#pricing">Pricing</Link>
-                    </DropdownMenuItem>
                   </>
                 )}
+                <DropdownMenuItem asChild>
+                  <Link href="/api-docs">API Documentation</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/faq">FAQ</Link>
                 </DropdownMenuItem>
@@ -231,22 +222,16 @@ export default function Navigation() {
                   >
                     Use Cases
                   </Button>
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start pl-8"
-                    onClick={() => scrollToSection('privacy-api')}
-                    data-testid="link-api-docs-mobile"
-                  >
-                    API Documentation
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start pl-8"
-                    onClick={() => scrollToSection('pricing')}
-                    data-testid="link-pricing-mobile"
-                  >
-                    Pricing
-                  </Button>
+                  <Link href="/api-docs" asChild>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start pl-8"
+                      onClick={() => setMobileMenuOpen(false)}
+                      data-testid="link-api-docs-mobile"
+                    >
+                      API Documentation
+                    </Button>
+                  </Link>
                 </>
               ) : (
                 <>
@@ -259,22 +244,13 @@ export default function Navigation() {
                       Use Cases
                     </Button>
                   </Link>
-                  <Link href="/#privacy-api" asChild>
+                  <Link href="/api-docs" asChild>
                     <Button
                       variant="ghost"
                       className="w-full justify-start pl-8"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       API Documentation
-                    </Button>
-                  </Link>
-                  <Link href="/#pricing" asChild>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-start pl-8"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Pricing
                     </Button>
                   </Link>
                 </>

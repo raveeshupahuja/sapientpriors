@@ -36,13 +36,11 @@ export default function Home() {
         <HeroSection />
         <ProductSection />
         <HowItWorksSection />
-        <CodeExampleSection />
         <UseCasesSection />
-        <PricingSection />
         <CaseStudySection />
-        <TestimonialsSection />
+        <PricingSection />
+        <CodeExampleSection />
         <TeamSection />
-        <ContactSection />
       </main>
       <Footer />
     </div>
