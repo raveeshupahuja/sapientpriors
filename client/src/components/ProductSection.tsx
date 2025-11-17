@@ -485,19 +485,12 @@ export default function ProductSection() {
   return (
     <section id="product" className="py-20 lg:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Demo Section First */}
+        {/* Demo Section First - No heading */}
         <div className="mb-20">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-center">
-            The Problem: AI Applications Don't Remember
-          </h2>
-          <p className="text-lg text-muted-foreground mb-12 text-center max-w-3xl mx-auto">
-            Your users have to repeat themselves in every conversation. Each session starts from scratch, creating a frustrating experience.
-          </p>
-
           {/* Before/After Visual Comparison */}
           <div
             ref={containerRef}
-            className="mb-12 max-w-6xl mx-auto relative cursor-pointer"
+            className="mb-16 max-w-6xl mx-auto relative cursor-pointer"
             onClick={handleContainerClick}
           >
             {/* Click prompt overlay */}
@@ -650,6 +643,16 @@ export default function ProductSection() {
                 </div>
               </Card>
             </div>
+          </div>
+
+          {/* Problem Explanation - After Demo */}
+          <div className="text-center max-w-3xl mx-auto mb-12 mt-16">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+              The Problem: AI Applications Don't Remember
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Your users have to repeat themselves in every conversation. Each session starts from scratch, creating a frustrating experience.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
