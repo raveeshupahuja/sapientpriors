@@ -8,3 +8,5 @@ vite.config.ts.*
 *.tar.gz
 temp/
 screenshots-playwright/
+.env
+.env.local
