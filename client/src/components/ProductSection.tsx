@@ -576,10 +576,12 @@ export default function ProductSection() {
 
                   {/* Frustration indicator */}
                   <div className={`mt-4 p-4 bg-destructive/5 rounded-lg transition-all duration-500 ${withoutFrustration >= 2 ? 'bg-destructive/20' : ''} ${withoutStep === 4 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
-                    <p className={`text-sm text-destructive transition-all duration-300 ${withoutFrustration >= 2 ? 'font-bold text-lg' : 'font-semibold'}`}>
-                      {frustrationText || "User frustration increases ↗"}
-                      {withoutStep === 4 && frustrationText.length < 37 && <span className="animate-pulse">|</span>}
-                    </p>
+                    {frustrationText && (
+                      <p className={`text-sm text-destructive transition-all duration-300 ${withoutFrustration >= 2 ? 'font-bold text-lg' : 'font-semibold'}`}>
+                        {frustrationText}
+                        {withoutStep === 4 && frustrationText.length < 37 && <span className="animate-pulse">|</span>}
+                      </p>
+                    )}
                   </div>
                 </div>
               </Card>
