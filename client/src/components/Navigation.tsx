@@ -128,14 +128,14 @@ export default function Navigation() {
             </DropdownMenu>
             {isHomePage ? (
               <Button
-                onClick={() => scrollToSection('contact')}
+                onClick={() => scrollToSection('pricing')}
                 className="ml-4"
                 data-testid="button-get-started"
               >
                 Get Started
               </Button>
             ) : (
-              <Link href="/#contact" asChild>
+              <Link href="/#pricing" asChild>
                 <Button className="ml-4" data-testid="button-get-started">
                   Get Started
                 </Button>
@@ -293,13 +293,13 @@ export default function Navigation() {
             {isHomePage ? (
               <Button
                 className="w-full"
-                onClick={() => scrollToSection('contact')}
+                onClick={() => scrollToSection('pricing')}
                 data-testid="button-get-started-mobile"
               >
                 Get Started
               </Button>
             ) : (
-              <Link href="/#contact" asChild>
+              <Link href="/#pricing" asChild>
                 <Button
                   className="w-full"
                   onClick={() => setMobileMenuOpen(false)}
