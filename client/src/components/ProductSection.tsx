@@ -557,7 +557,7 @@ export default function ProductSection() {
                   </div>
 
                   {/* Frustration indicator */}
-                  <div className={`mt-4 p-4 bg-destructive/5 rounded-lg transition-all duration-500 ${withoutFrustration >= 2 ? 'bg-destructive/20 ring-2 ring-destructive' : ''}`}>
+                  <div className={`mt-4 p-4 bg-destructive/5 rounded-lg transition-all duration-500 ${withoutFrustration >= 2 && withStep === 0 ? 'bg-destructive/20 ring-2 ring-destructive' : withoutFrustration >= 2 ? 'bg-destructive/20' : ''}`}>
                     <p className={`text-sm text-destructive transition-all duration-300 ${withoutFrustration >= 2 ? 'font-bold text-lg' : 'font-semibold'}`}>User frustration increases ↗</p>
                   </div>
                 </div>
