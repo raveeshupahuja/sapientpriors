@@ -5,9 +5,9 @@ import { Check } from "lucide-react";
 export default function PricingSection() {
   const plans = [
     {
-      name: "Free",
-      price: "$0",
-      period: "forever",
+      name: "Starter",
+      price: "Beta",
+      period: "pricing",
       description: "Perfect for testing and small projects",
       features: [
         "20,000 interactions stored",
@@ -16,13 +16,13 @@ export default function PricingSection() {
         "Email support",
         "7-day data retention"
       ],
-      cta: "Get Started Free",
+      cta: "Join Beta Program",
       highlighted: false
     },
     {
-      name: "Pro",
-      price: "$20",
-      period: "per month",
+      name: "Professional",
+      price: "Beta",
+      period: "pricing",
       description: "Best for growing applications",
       features: [
         "200,000 interactions stored",
@@ -31,13 +31,13 @@ export default function PricingSection() {
         "Priority email support",
         "Analytics dashboard"
       ],
-      cta: "Start Pro Trial",
+      cta: "Join Beta Program",
       highlighted: true
     },
     {
       name: "Enterprise",
       price: "Custom",
-      period: "contact us",
+      period: "pricing",
       description: "For large-scale deployments",
       features: [
         "Unlimited interactions stored",
@@ -50,7 +50,7 @@ export default function PricingSection() {
         "Custom integrations",
         "Dedicated account manager"
       ],
-      cta: "Contact Sales",
+      cta: "Join Beta Program",
       highlighted: false
     }
   ];
@@ -66,11 +66,17 @@ export default function PricingSection() {
     <section id="pricing" className="py-20 lg:py-32 bg-background">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto mb-16">
+          <div className="inline-block px-4 py-2 bg-primary/10 rounded-full mb-4">
+            <span className="text-sm font-semibold text-primary">Early Beta Program</span>
+          </div>
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-6">
-            Simple, Transparent Pricing
+            Join Our Beta Program
           </h2>
+          <p className="text-base lg:text-lg text-muted-foreground leading-relaxed mb-4">
+            We're currently in early beta and accepting a limited number of partners to help shape the future of continuous learning AI.
+          </p>
           <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
-            Start free, scale as you grow. All plans include our core learning capabilities.
+            Contact us to discuss beta access and pricing tailored to your needs.
           </p>
         </div>
 
@@ -87,7 +93,7 @@ export default function PricingSection() {
             >
               {plan.highlighted && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-primary-foreground text-sm font-semibold rounded-full">
-                  Most Popular
+                  Recommended
                 </div>
               )}
 
@@ -125,10 +131,13 @@ export default function PricingSection() {
         </div>
 
         <div className="mt-16 text-center max-w-3xl mx-auto">
-          <p className="text-sm text-muted-foreground">
-            All plans include access to our REST API, support for all major AI providers (OpenAI, Anthropic, Google),
-            and automatic scaling. Enterprise plans can include private cloud deployment and custom data residency options.
-          </p>
+          <Card className="p-6 bg-primary/5 border-primary/20">
+            <p className="text-sm font-semibold mb-2">Early Beta Benefits</p>
+            <p className="text-sm text-muted-foreground">
+              Beta partners get early access to new features, dedicated onboarding support, and the opportunity to shape our product roadmap.
+              All plans include access to our REST API, support for all major AI providers (OpenAI, Anthropic, Google), and automatic scaling.
+            </p>
+          </Card>
         </div>
       </div>
     </section>
