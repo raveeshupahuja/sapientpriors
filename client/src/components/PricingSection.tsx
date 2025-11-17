@@ -1,66 +1,83 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Check, Rocket, Users, Zap } from "lucide-react";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function PricingSection() {
-  const plans = [
-    {
-      name: "Starter",
-      price: "Beta",
-      period: "pricing",
-      description: "Perfect for testing and small projects",
-      features: [
-        "20,000 interactions stored",
-        "2,000 API calls per month",
-        "Basic learning algorithms",
-        "Email support",
-        "7-day data retention"
-      ],
-      cta: "Join Beta Program",
-      highlighted: false
-    },
-    {
-      name: "Professional",
-      price: "Beta",
-      period: "pricing",
-      description: "Best for growing applications",
-      features: [
-        "200,000 interactions stored",
-        "20,000 API calls per month",
-        "Advanced learning algorithms",
-        "Priority email support",
-        "Analytics dashboard"
-      ],
-      cta: "Join Beta Program",
-      highlighted: true
-    },
-    {
-      name: "Enterprise",
-      price: "Custom",
-      period: "pricing",
-      description: "For large-scale deployments",
-      features: [
-        "Unlimited interactions stored",
-        "Unlimited API calls",
-        "Enterprise-grade learning",
-        "24/7 dedicated support",
-        "Custom data retention",
-        "On-premise deployment option",
-        "SLA guarantee",
-        "Custom integrations",
-        "Dedicated account manager"
-      ],
-      cta: "Join Beta Program",
-      highlighted: false
-    }
-  ];
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    useCase: "",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
-  const scrollToContact = () => {
-    const element = document.getElementById('contact');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          subject: 'Beta Program Interest',
+          to: 'raveeshupahuja@sapientpriors.com'
+        }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Application Submitted!",
+          description: "We'll review your application and get back to you within 48 hours.",
+        });
+        setFormData({
+          name: "",
+          email: "",
+          company: "",
+          useCase: "",
+          message: ""
+        });
+      } else {
+        throw new Error('Failed to submit');
+      }
+    } catch (error) {
+      toast({
+        title: "Submission Failed",
+        description: "Please try again or email us directly at raveeshupahuja@sapientpriors.com",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  const betaFeatures = [
+    {
+      icon: Rocket,
+      title: "Early Access",
+      description: "Get exclusive access to new features before public release"
+    },
+    {
+      icon: Users,
+      title: "Dedicated Support",
+      description: "Work directly with our team for onboarding and integration"
+    },
+    {
+      icon: Zap,
+      title: "Shape the Product",
+      description: "Your feedback directly influences our product roadmap"
+    }
+  ];
 
   return (
     <section id="pricing" className="py-20 lg:py-32 bg-background">
@@ -76,66 +93,108 @@ export default function PricingSection() {
             We're currently in early beta and accepting a limited number of partners to help shape the future of continuous learning AI.
           </p>
           <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
-            Contact us to discuss beta access and pricing tailored to your needs.
+            Apply below to discuss beta access and pricing tailored to your needs.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {plans.map((plan, index) => (
-            <Card
-              key={index}
-              className={`p-8 ${
-                plan.highlighted
-                  ? "border-2 border-primary shadow-xl relative"
-                  : "border-2 border-border"
-              }`}
-              data-testid={`pricing-card-${index}`}
-            >
-              {plan.highlighted && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-primary-foreground text-sm font-semibold rounded-full">
-                  Recommended
-                </div>
-              )}
-
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{plan.description}</p>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold">{plan.price}</span>
-                  <span className="text-muted-foreground">/ {plan.period}</span>
-                </div>
+        {/* Beta Features */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
+          {betaFeatures.map((feature, index) => (
+            <Card key={index} className="p-6 text-center">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <feature.icon className="w-6 h-6 text-primary" />
               </div>
-
-              <ul className="space-y-3 mb-8">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="text-sm text-muted-foreground">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <Button
-                onClick={scrollToContact}
-                className={`w-full ${
-                  plan.highlighted
-                    ? ""
-                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                }`}
-                data-testid={`pricing-cta-${index}`}
-              >
-                {plan.cta}
-              </Button>
+              <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+              <p className="text-sm text-muted-foreground">{feature.description}</p>
             </Card>
           ))}
         </div>
 
-        <div className="mt-16 text-center max-w-3xl mx-auto">
+        {/* Beta Application Form */}
+        <div className="max-w-2xl mx-auto">
+          <Card className="p-8 lg:p-10">
+            <h3 className="text-2xl font-bold mb-6 text-center">Apply for Beta Access</h3>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Full Name *</Label>
+                  <Input
+                    id="name"
+                    placeholder="John Doe"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="john@company.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="company">Company Name *</Label>
+                <Input
+                  id="company"
+                  placeholder="Acme Inc."
+                  value={formData.company}
+                  onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="useCase">What's your use case? *</Label>
+                <Input
+                  id="useCase"
+                  placeholder="e.g., Chatbot personalization, customer support, etc."
+                  value={formData.useCase}
+                  onChange={(e) => setFormData({ ...formData, useCase: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="message">Additional Information (Optional)</Label>
+                <Textarea
+                  id="message"
+                  placeholder="Tell us more about your project, expected usage, timeline, etc."
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  rows={4}
+                />
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full"
+                size="lg"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Apply for Beta Access"}
+              </Button>
+
+              <p className="text-xs text-center text-muted-foreground">
+                We'll review your application and get back to you within 48 hours.
+              </p>
+            </form>
+          </Card>
+        </div>
+
+        {/* Additional Info */}
+        <div className="mt-12 text-center max-w-3xl mx-auto">
           <Card className="p-6 bg-primary/5 border-primary/20">
-            <p className="text-sm font-semibold mb-2">Early Beta Benefits</p>
+            <p className="text-sm font-semibold mb-2">What's Included</p>
             <p className="text-sm text-muted-foreground">
-              Beta partners get early access to new features, dedicated onboarding support, and the opportunity to shape our product roadmap.
-              All plans include access to our REST API, support for all major AI providers (OpenAI, Anthropic, Google), and automatic scaling.
+              Beta partners get access to our full REST API, support for all major AI providers (OpenAI, Anthropic, Google),
+              dedicated onboarding assistance, and the opportunity to influence our product roadmap.
             </p>
           </Card>
         </div>

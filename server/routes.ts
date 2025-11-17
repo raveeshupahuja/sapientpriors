@@ -64,6 +64,69 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // Beta Contact Form Endpoint
+  app.post("/api/contact", async (req, res) => {
+    const { name, email, company, useCase, message, subject, to } = req.body;
+
+    // Validate required fields
+    if (!name || !email || !company || !useCase) {
+      return res.status(400).json({
+        error: 'Missing required fields',
+        message: 'Please provide name, email, company, and use case.'
+      });
+    }
+
+    // Log the contact form submission
+    console.log('Contact form received:', {
+      name,
+      email,
+      company,
+      useCase,
+      subject: subject || 'Contact Form Submission'
+    });
+
+    // Send email notification if Resend is configured
+    if (resend) {
+      try {
+        await resend.emails.send({
+          from: 'SapientPriors <noreply@sapientpriors.com>',
+          to: to || 'raveeshupahuja@sapientpriors.com',
+          subject: subject || `New Contact Form: ${name} from ${company}`,
+          html: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Company:</strong> ${company}</p>
+            <p><strong>Use Case:</strong> ${useCase}</p>
+
+            ${message ? `
+              <h3>Additional Information:</h3>
+              <p style="white-space: pre-wrap;">${message}</p>
+            ` : ''}
+
+            <hr>
+            <p style="color: #666; font-size: 12px;">This submission was received via the SapientPriors website contact form.</p>
+          `
+        });
+        console.log('Contact email sent successfully');
+      } catch (emailError) {
+        console.error('Failed to send contact email:', emailError);
+        return res.status(500).json({
+          error: 'Email delivery failed',
+          message: 'We received your submission but failed to send the notification email. Please contact us directly at raveeshupahuja@sapientpriors.com'
+        });
+      }
+    } else {
+      console.log('Resend not configured - skipping email notification');
+      // In development without Resend, we'll still return success
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Your application has been submitted successfully!"
+    });
+  });
+
   // Careers Application Endpoint
   app.post("/api/careers/apply", upload.single('resume'), async (req: any, res) => {
     // In a real application, this would:
