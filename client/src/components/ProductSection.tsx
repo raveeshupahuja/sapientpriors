@@ -610,7 +610,7 @@ export default function ProductSection() {
                   <div className={`text-center text-2xl transition-all duration-500 ${withStep >= 2 ? 'scale-110 text-green-500' : 'scale-100 text-green-500/50'}`}>↓</div>
 
                   {/* Tuesday */}
-                  <div className={`bg-background rounded-lg p-4 border-l-4 border-green-500/50 relative transition-all duration-500 ${withStep >= 2 ? 'opacity-100' : 'opacity-30'} ${isEditing ? 'ring-2 ring-green-500 ring-offset-2' : ''}`}>
+                  <div className={`bg-background rounded-lg p-4 border-l-4 border-green-500/50 relative transition-all duration-500 ${withStep >= 2 ? 'opacity-100' : 'opacity-30'} ${(withStep === 2 || withStep === 3) ? 'ring-2 ring-green-500 ring-offset-2' : ''}`}>
                     <p className="text-sm font-semibold mb-2">Tuesday - AI suggests:</p>
                     <div className={`text-xs bg-muted/30 p-3 rounded mb-2 font-mono whitespace-pre-wrap relative ${isEditing ? 'shadow-lg' : ''} min-h-[60px]`}>
                       {!isEditing ? withTuesdayAiText : withTuesdayUserEdit}
