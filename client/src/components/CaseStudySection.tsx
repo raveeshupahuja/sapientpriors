@@ -3,27 +3,27 @@ import { TrendingUp, Users, Clock } from "lucide-react";
 
 export default function CaseStudySection() {
   const challenges = [
-    "Users had to repeatedly specify their financial goals and risk tolerance in every conversation",
+    "Users had to repeatedly specify their insurance needs and coverage preferences in every conversation",
     "The assistant couldn't remember past frustrations or preferences mentioned in earlier sessions",
     "No continuity between sessions led to inconsistent recommendations",
-    "Critical context like user pain points (e.g., complicated insurance claim processes) was lost between conversations"
+    "Critical context like user pain points (e.g., complicated claim processes, coverage gaps) was lost between conversations"
   ];
 
   const solutions = [
     {
       icon: Users,
-      title: "Personalized Financial Profiles",
-      description: "Automatically learns each user's risk tolerance, investment goals, and financial preferences"
+      title: "Personalized Insurance Profiles",
+      description: "Automatically learns each user's coverage needs, risk concerns, and insurance preferences"
     },
     {
       icon: TrendingUp,
-      title: "Consistent Investment Advice",
+      title: "Consistent Insurance Advice",
       description: "Remembers past recommendations and builds on previous conversations for coherent guidance"
     },
     {
       icon: Clock,
       title: "Context-Aware Interactions",
-      description: "Recalls user's financial situation, past questions, and preferences for faster, more relevant responses"
+      description: "Recalls user's insurance situation, past questions, and preferences for faster, more relevant responses"
     }
   ];
 
@@ -36,7 +36,7 @@ export default function CaseStudySection() {
             <span className="text-sm font-semibold text-primary">Customer Success Story</span>
           </div>
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-6">
-            How Ental.ai Transformed Financial Advisory with Personalization
+            How Ental.ai Transformed Insurance Advisory with Personalization
           </h2>
           <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
             <a
@@ -47,8 +47,8 @@ export default function CaseStudySection() {
             >
               Ental.ai
             </a>
-            , a WhatsApp-based personal finance assistant, integrated our Continuous Learning API
-            to deliver truly personalized financial advice and investment recommendations.
+            , a WhatsApp-based insurance advisory assistant, integrated our Continuous Learning API
+            to deliver truly personalized insurance recommendations and advice.
           </p>
         </div>
 
@@ -59,9 +59,9 @@ export default function CaseStudySection() {
           </h3>
           <Card className="p-8">
             <p className="text-base lg:text-lg text-muted-foreground mb-6">
-              Before integrating SapientPriors' API, Ental.ai's financial assistant faced a common problem:
-              every conversation started from scratch. Users had to repeatedly explain their financial situation,
-              goals, and preferences.
+              Before integrating SapientPriors' API, Ental.ai's insurance assistant faced a common problem:
+              every conversation started from scratch. Users had to repeatedly explain their insurance needs,
+              coverage requirements, and preferences.
             </p>
             <ul className="space-y-3">
               {challenges.map((challenge, index) => (
