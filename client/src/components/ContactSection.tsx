@@ -1,47 +1,43 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Mail } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 
 export default function ContactSection() {
-  const handleEmailClick = () => {
-    window.location.href = 'mailto:raveeshupahuja@sapientpriors.com';
+  const scrollToPricing = () => {
+    const element = document.getElementById('pricing');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
-    <section id="contact" className="py-20 lg:py-32">
+    <section id="contact" className="py-20 lg:py-32 bg-gradient-to-b from-background to-card">
       <div className="max-w-4xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6">
-            Ready to Build Continuously Learning Agents?
+        <Card className="p-8 lg:p-12 text-center border-2 border-primary/20">
+          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4">
+            Ready to Get Started?
           </h2>
-          <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
-            Contact us to onboard your application and start delivering personalized experiences that improve over time.
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Join our beta program and be part of shaping the future of continuous learning AI.
+            Limited spots available.
           </p>
-        </div>
-
-        <Card className="p-8 lg:p-12 text-center">
-          <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-6">
-            <Mail className="w-8 h-8 text-primary" />
-          </div>
-          <h3 className="text-2xl font-semibold mb-4">Get in Touch</h3>
-          <p className="text-muted-foreground mb-8">
-            Ready to add continuous learning to your application? Get in touch to discuss how our API can transform your product.
-          </p>
-          <a
-            href="mailto:raveeshupahuja@sapientpriors.com"
-            className="text-lg font-semibold text-primary hover:underline mb-8 block"
-            data-testid="link-email"
-          >
-            raveeshupahuja@sapientpriors.com
-          </a>
           <Button
             size="lg"
-            onClick={handleEmailClick}
+            onClick={scrollToPricing}
             className="px-8"
-            data-testid="button-contact-email"
           >
-            Send Email
+            <ArrowUp className="w-4 h-4 mr-2 rotate-180" />
+            Apply for Beta Access
           </Button>
+          <p className="text-sm text-muted-foreground mt-6">
+            Or email us directly at{" "}
+            <a
+              href="mailto:raveeshupahuja@sapientpriors.com"
+              className="font-semibold text-primary hover:underline"
+            >
+              raveeshupahuja@sapientpriors.com
+            </a>
+          </p>
         </Card>
       </div>
     </section>
