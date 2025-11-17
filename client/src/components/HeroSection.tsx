@@ -186,11 +186,11 @@ export default function HeroSection() {
         {/* Single CTA */}
         <Button
           size="lg"
-          onClick={scrollToContact}
+          onClick={scrollToProduct}
           className="px-8 text-lg"
-          data-testid="button-hero-get-started"
+          data-testid="button-hero-view-demo"
         >
-          Get Started
+          View Demo
         </Button>
       </div>
 

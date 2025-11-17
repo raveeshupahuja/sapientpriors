@@ -130,14 +130,14 @@ export default function Navigation() {
               <Button
                 onClick={() => scrollToSection('pricing')}
                 className="ml-4"
-                data-testid="button-get-started"
+                data-testid="button-get-access"
               >
-                Get Started
+                Get Access
               </Button>
             ) : (
               <Link href="/#pricing" asChild>
-                <Button className="ml-4" data-testid="button-get-started">
-                  Get Started
+                <Button className="ml-4" data-testid="button-get-access">
+                  Get Access
                 </Button>
               </Link>
             )}
@@ -294,18 +294,18 @@ export default function Navigation() {
               <Button
                 className="w-full"
                 onClick={() => scrollToSection('pricing')}
-                data-testid="button-get-started-mobile"
+                data-testid="button-get-access-mobile"
               >
-                Get Started
+                Get Access
               </Button>
             ) : (
               <Link href="/#pricing" asChild>
                 <Button
                   className="w-full"
                   onClick={() => setMobileMenuOpen(false)}
-                  data-testid="button-get-started-mobile"
+                  data-testid="button-get-access-mobile"
                 >
-                  Get Started
+                  Get Access
                 </Button>
               </Link>
             )}

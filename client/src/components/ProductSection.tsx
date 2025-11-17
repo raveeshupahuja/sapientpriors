@@ -333,7 +333,7 @@ export default function ProductSection() {
       // Tuesday - AI types long email
       setWithoutStep(2);
       await wait(500);
-      await typeText('Hi John,\n\nI hope this email finds you well and you\'re having a great week so far. I wanted to reach out regarding the quarterly report...', setWithoutTuesdayText, 25, 0, 'ai'); // AI typing - slower
+      await typeText('Hi John,\n\nI hope this email finds you well and you\'re having a great week so far. I wanted to reach out regarding the quarterly report that we discussed in our last meeting. I think it would be beneficial if we could schedule some time to review the key findings and discuss the next steps in detail. Please let me know your availability for next week, and I\'ll send over a calendar invite. Looking forward to hearing from you soon.\n\nBest regards', setWithoutTuesdayText, 25, 0, 'ai'); // AI typing - slower
       await wait(800);
       setWithoutFrustration(1);
       await wait(500);
@@ -362,36 +362,38 @@ export default function ProductSection() {
       // Tuesday - AI types suggestion
       setWithStep(2);
       await wait(500);
-      await typeText('Hi John,\n\nQuick update on the Q4 report...', setWithTuesdayAiText, 25, 0, 'ai'); // AI typing - slower
+      await typeText('Hi John,\n\nQuick update on Q4 report: Numbers look good. Review meeting this Friday.\n\nThanks', setWithTuesdayAiText, 25, 0, 'ai'); // AI typing - slower
       await wait(1200);
 
       // User edits the text (calm, no frustration)
       setIsEditing(true);
 
       // Initialize user edit text with the AI's full text
-      const fullText = "Quick update on the Q4 report...";
+      const fullText = "Hi John,\n\nQuick update on Q4 report: Numbers look good. Review meeting this Friday.\n\nThanks";
       setWithTuesdayUserEdit(fullText);
       await wait(500);
 
-      // Delete "on the Q4 report"
-      for (let i = fullText.length; i >= 13; i--) {
+      // Delete from "report:" onwards and replace with "Re:"
+      const deleteToIndex = fullText.indexOf("report:") + 6; // Keep up to "report"
+      for (let i = fullText.length; i >= deleteToIndex; i--) {
         setWithTuesdayUserEdit(fullText.substring(0, i));
         // Play user sound on delete (backspace sound) - no frustration
-        if (fullText[i] !== ' ') {
+        if (fullText[i] !== ' ' && fullText[i] !== '\n') {
+          playUserTypingSound(0);
+        }
+        await wait(30);
+      }
+
+      // Type new concise version
+      const newText = "Hi John,\n\nRe: Q4 report—Numbers look good. Meeting Friday.\n\nThanks";
+      const startTyping = fullText.substring(0, deleteToIndex);
+      for (let i = startTyping.length; i <= newText.length; i++) {
+        setWithTuesdayUserEdit(newText.substring(0, i));
+        // Play user sound when typing new characters - no frustration
+        if (i > 0 && newText[i - 1] !== ' ' && newText[i - 1] !== '\n') {
           playUserTypingSound(0);
         }
         await wait(50);
-      }
-
-      // Type "re: Q4 report..."
-      const newText = "Quick update re: Q4 report...";
-      for (let i = 14; i <= newText.length; i++) {
-        setWithTuesdayUserEdit(newText.substring(0, i));
-        // Play user sound when typing new characters - no frustration
-        if (i > 0 && newText[i - 1] !== ' ') {
-          playUserTypingSound(0);
-        }
-        await wait(70);
       }
 
       setIsEditing(false);
@@ -404,7 +406,7 @@ export default function ProductSection() {
       // Wednesday - AI uses learned preference
       setWithStep(4);
       await wait(500);
-      await typeText('Hi Sarah,\n\nRe: Budget approval—approved. Will confirm by EOD.', setWithWednesdayText, 25, 0, 'ai'); // AI typing - slower
+      await typeText('Hi Sarah,\n\nRe: Budget approval—Approved. Will confirm by EOD.\n\nThanks', setWithWednesdayText, 25, 0, 'ai'); // AI typing - slower
       await wait(800);
       setShowHighlight(true);
       setWithSatisfaction(2);
@@ -412,6 +414,14 @@ export default function ProductSection() {
       await wait(4000);
 
       setIsAnimating(false);
+
+      // Auto-replay after a pause if still in view
+      if (isInView) {
+        await wait(3000); // Pause for 3 seconds before restarting
+        if (isInView && !queueNextAnimationRef.current) {
+          runAnimationSequence();
+        }
+      }
 
       // Check if another animation was queued
       if (queueNextAnimationRef.current && isInView) {
@@ -540,7 +550,7 @@ export default function ProductSection() {
                   <div className={`text-center text-2xl transition-all duration-500 ${withoutStep >= 2 ? 'scale-110 text-destructive' : 'scale-100 text-destructive/50'}`}>↓</div>
 
                   {/* Tuesday */}
-                  <div className={`bg-muted/50 rounded-lg p-4 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 2 ? 'opacity-100 ring-2 ring-destructive ring-offset-2' : 'opacity-30'}`}>
+                  <div className={`bg-muted/50 rounded-lg p-4 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 2 ? 'opacity-100' : 'opacity-30'} ${withoutStep === 2 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
                     <p className="text-sm font-semibold mb-2">Tuesday - AI suggests:</p>
                     <div className="text-xs bg-background/50 p-3 rounded mb-2 font-mono whitespace-pre-wrap min-h-[80px]">
                       {withoutTuesdayText}
@@ -564,7 +574,7 @@ export default function ProductSection() {
                   <div className={`text-center text-2xl transition-all duration-500 ${withoutStep >= 3 ? 'scale-110 text-destructive' : 'scale-100 text-destructive/50'}`}>↓</div>
 
                   {/* Wednesday */}
-                  <div className={`bg-muted/50 rounded-lg p-4 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 3 ? 'opacity-100 ring-2 ring-destructive ring-offset-2' : 'opacity-30'}`}>
+                  <div className={`bg-muted/50 rounded-lg p-4 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 3 ? 'opacity-100' : 'opacity-30'} ${withoutStep === 3 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
                     <p className="text-sm font-semibold mb-2">Wednesday - Same problem:</p>
                     <p className="text-xs text-muted-foreground min-h-[20px]">
                       {withoutWednesdayText}
@@ -588,7 +598,7 @@ export default function ProductSection() {
                 </div>
                 <div className="space-y-6">
                   {/* Monday */}
-                  <div className={`bg-background rounded-lg p-4 border-l-4 border-green-500/50 transition-all duration-500 ${withStep >= 1 ? 'opacity-100 scale-100 ring-2 ring-green-500 ring-offset-2' : 'opacity-30 scale-95'}`}>
+                  <div className={`bg-background rounded-lg p-4 border-l-4 border-green-500/50 transition-all duration-500 ${withStep >= 1 ? 'opacity-100 scale-100' : 'opacity-30 scale-95'} ${withStep === 1 ? 'ring-2 ring-green-500 ring-offset-2' : ''}`}>
                     <p className="text-sm font-semibold mb-2">Monday - User says:</p>
                     <p className="text-xs text-muted-foreground italic mb-2 min-h-[20px]">
                       {withMondayText}
@@ -633,7 +643,7 @@ export default function ProductSection() {
                   <div className={`text-center text-2xl transition-all duration-500 ${withStep >= 4 ? 'scale-110 text-green-500' : 'scale-100 text-green-500/50'}`}>↓</div>
 
                   {/* Wednesday */}
-                  <div className={`bg-background rounded-lg p-4 border-l-4 border-green-500/50 transition-all duration-500 ${withStep >= 4 ? 'opacity-100 ring-2 ring-green-500 ring-offset-2' : 'opacity-30'}`}>
+                  <div className={`bg-background rounded-lg p-4 border-l-4 border-green-500/50 transition-all duration-500 ${withStep >= 4 ? 'opacity-100' : 'opacity-30'} ${withStep === 4 ? 'ring-2 ring-green-500 ring-offset-2' : ''}`}>
                     <p className="text-sm font-semibold mb-2">Wednesday - AI suggests:</p>
                     <div className="text-xs bg-muted/30 p-3 rounded mb-2 font-mono whitespace-pre-wrap min-h-[60px]">
                       {withWednesdayText.includes('Re:') && showHighlight ? (
