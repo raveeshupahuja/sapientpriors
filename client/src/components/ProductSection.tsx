@@ -512,7 +512,7 @@ export default function ProductSection() {
                 </div>
                 <div className="space-y-6">
                   {/* Monday */}
-                  <div className={`bg-muted/50 rounded-lg p-4 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 1 ? 'opacity-100 scale-100' : 'opacity-30 scale-95'}`}>
+                  <div className={`bg-muted/50 rounded-lg p-4 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 1 ? 'opacity-100 scale-100' : 'opacity-30 scale-95'} ${withoutStep === 1 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
                     <p className="text-sm font-semibold mb-2">Monday - User says:</p>
                     <p className="text-xs text-muted-foreground italic min-h-[20px]">
                       {withoutMondayText}
@@ -524,7 +524,7 @@ export default function ProductSection() {
                   <div className={`text-center text-2xl transition-all duration-500 ${withoutStep >= 2 ? 'scale-110 text-destructive' : 'scale-100 text-destructive/50'}`}>↓</div>
 
                   {/* Tuesday */}
-                  <div className={`bg-muted/50 rounded-lg p-4 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 2 ? 'opacity-100' : 'opacity-30'} ${withoutStep === 2 && withStep === 0 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
+                  <div className={`bg-muted/50 rounded-lg p-4 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 2 ? 'opacity-100' : 'opacity-30'} ${withoutStep === 2 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
                     <p className="text-sm font-semibold mb-2">Tuesday - AI suggests:</p>
                     <div className="text-xs bg-background/50 p-3 rounded mb-2 font-mono whitespace-pre-wrap min-h-[80px]">
                       {withoutTuesdayText}
@@ -557,7 +557,7 @@ export default function ProductSection() {
                   </div>
 
                   {/* Frustration indicator */}
-                  <div className={`mt-4 p-4 bg-destructive/5 rounded-lg transition-all duration-500 ${withoutFrustration >= 2 && withStep === 0 ? 'bg-destructive/20 ring-2 ring-destructive' : withoutFrustration >= 2 ? 'bg-destructive/20' : ''}`}>
+                  <div className={`mt-4 p-4 bg-destructive/5 rounded-lg transition-all duration-500 ${withoutFrustration >= 2 ? 'bg-destructive/20' : ''}`}>
                     <p className={`text-sm text-destructive transition-all duration-300 ${withoutFrustration >= 2 ? 'font-bold text-lg' : 'font-semibold'}`}>User frustration increases ↗</p>
                   </div>
                 </div>
