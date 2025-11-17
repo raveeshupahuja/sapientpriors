@@ -485,30 +485,11 @@ export default function ProductSection() {
   return (
     <section id="product" className="py-20 lg:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center max-w-4xl mx-auto mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6">
-            What Is It?
-          </h2>
-          <p className="text-xl lg:text-2xl text-muted-foreground leading-relaxed mb-4 font-medium">
-            A REST API that doesn't just remember—it learns. Discovers what your users want, even when they don't say it.
-          </p>
-          <p className="text-base lg:text-lg text-muted-foreground mb-6">
-            Learns explicit preferences your users tell it, discovers implicit ones they don't, and adapts to each user's unique style.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3 text-sm mb-8">
-            <span className="px-4 py-2 bg-card border border-border rounded-lg font-mono">POST /api/learn</span>
-            <span className="px-4 py-2 bg-card border border-border rounded-lg font-mono">GET /api/context</span>
-            <span className="px-4 py-2 bg-card border border-border rounded-lg text-muted-foreground">2 Endpoints</span>
-          </div>
-          <p className="text-base lg:text-lg text-muted-foreground">
-            Works with OpenAI, Anthropic, Google, or any AI provider. No fine-tuning required.
-          </p>
-        </div>
-
+        {/* Demo Section First */}
         <div className="mb-20">
-          <h3 className="text-3xl lg:text-4xl font-bold mb-4 text-center">
+          <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-center">
             The Problem: AI Applications Don't Remember
-          </h3>
+          </h2>
           <p className="text-lg text-muted-foreground mb-12 text-center max-w-3xl mx-auto">
             Your users have to repeat themselves in every conversation. Each session starts from scratch, creating a frustrating experience.
           </p>
@@ -720,6 +701,27 @@ export default function ProductSection() {
               </div>
             </Card>
           </div>
+        </div>
+
+        {/* What Is It Section */}
+        <div className="text-center max-w-4xl mx-auto mt-32">
+          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6">
+            What Is It?
+          </h2>
+          <p className="text-xl lg:text-2xl text-muted-foreground leading-relaxed mb-4 font-medium">
+            A REST API that doesn't just remember—it learns. Discovers what your users want, even when they don't say it.
+          </p>
+          <p className="text-base lg:text-lg text-muted-foreground mb-6">
+            Learns explicit preferences your users tell it, discovers implicit ones they don't, and adapts to each user's unique style.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3 text-sm mb-8">
+            <span className="px-4 py-2 bg-card border border-border rounded-lg font-mono">POST /api/learn</span>
+            <span className="px-4 py-2 bg-card border border-border rounded-lg font-mono">GET /api/context</span>
+            <span className="px-4 py-2 bg-card border border-border rounded-lg text-muted-foreground">2 Endpoints</span>
+          </div>
+          <p className="text-base lg:text-lg text-muted-foreground">
+            Works with OpenAI, Anthropic, Google, or any AI provider. No fine-tuning required.
+          </p>
         </div>
       </div>
     </section>
