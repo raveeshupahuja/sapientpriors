@@ -524,7 +524,7 @@ export default function ProductSection() {
                   <div className={`text-center text-2xl transition-all duration-500 ${withoutStep >= 2 ? 'scale-110 text-destructive' : 'scale-100 text-destructive/50'}`}>↓</div>
 
                   {/* Tuesday */}
-                  <div className={`bg-muted/50 rounded-lg p-4 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 2 ? 'opacity-100' : 'opacity-30'} ${withoutStep === 2 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
+                  <div className={`bg-muted/50 rounded-lg p-4 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 2 ? 'opacity-100' : 'opacity-30'} ${withoutStep === 2 && withStep === 0 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
                     <p className="text-sm font-semibold mb-2">Tuesday - AI suggests:</p>
                     <div className="text-xs bg-background/50 p-3 rounded mb-2 font-mono whitespace-pre-wrap min-h-[80px]">
                       {withoutTuesdayText}
@@ -548,7 +548,7 @@ export default function ProductSection() {
                   <div className={`text-center text-2xl transition-all duration-500 ${withoutStep >= 3 ? 'scale-110 text-destructive' : 'scale-100 text-destructive/50'}`}>↓</div>
 
                   {/* Wednesday */}
-                  <div className={`bg-muted/50 rounded-lg p-4 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 3 ? 'opacity-100' : 'opacity-30'} ${withoutStep === 3 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
+                  <div className={`bg-muted/50 rounded-lg p-4 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 3 ? 'opacity-100' : 'opacity-30'} ${withoutStep === 3 && withStep === 0 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
                     <p className="text-sm font-semibold mb-2">Wednesday - Same problem:</p>
                     <p className="text-xs text-muted-foreground min-h-[20px]">
                       {withoutWednesdayText}
