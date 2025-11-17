@@ -13,6 +13,7 @@ export default function ProductSection() {
   const [withoutTuesdayReminderText, setWithoutTuesdayReminderText] = useState("");
   const [withoutWednesdayText, setWithoutWednesdayText] = useState("");
   const [withoutFrustration, setWithoutFrustration] = useState(0);
+  const [frustrationText, setFrustrationText] = useState("");
 
   // With SapientPriors animation states
   const [withStep, setWithStep] = useState(0);
@@ -302,6 +303,7 @@ export default function ProductSection() {
     setWithoutTuesdayReminderText("");
     setWithoutWednesdayText("");
     setWithoutFrustration(0);
+    setFrustrationText("");
     setWithStep(0);
     setWithMondayText("");
     setWithTuesdayAiText("");
@@ -350,7 +352,23 @@ export default function ProductSection() {
       await wait(800);
       setWithoutFrustration(2);
       playFrustratedKeyboardSound(); // Play frustrated sound again when frustration increases more
-      await wait(2000);
+      await wait(1000);
+
+      // Frustration indicator typing animation - step 4
+      setWithoutStep(4);
+      await wait(500);
+      const frustrationMessage = "User frustration increasessssssss ↗";
+      for (let i = 0; i <= frustrationMessage.length; i++) {
+        setFrustrationText(frustrationMessage.substring(0, i));
+        // Play loud frustrated keyboard sound for each character
+        if (i > 0 && frustrationMessage[i - 1] !== ' ') {
+          playUserTypingSound(2); // Maximum frustration level
+        }
+        // Slower typing at first, then faster and more aggressive
+        const delay = i < 20 ? 80 : i < 30 ? 60 : 40;
+        await wait(delay);
+      }
+      await wait(1500);
 
       // === WITH SAPIENTPRIORS (RIGHT SIDE) ===
 
@@ -557,8 +575,11 @@ export default function ProductSection() {
                   </div>
 
                   {/* Frustration indicator */}
-                  <div className={`mt-4 p-4 bg-destructive/5 rounded-lg transition-all duration-500 ${withoutFrustration >= 2 ? 'bg-destructive/20' : ''}`}>
-                    <p className={`text-sm text-destructive transition-all duration-300 ${withoutFrustration >= 2 ? 'font-bold text-lg' : 'font-semibold'}`}>User frustration increases ↗</p>
+                  <div className={`mt-4 p-4 bg-destructive/5 rounded-lg transition-all duration-500 ${withoutFrustration >= 2 ? 'bg-destructive/20' : ''} ${withoutStep === 4 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
+                    <p className={`text-sm text-destructive transition-all duration-300 ${withoutFrustration >= 2 ? 'font-bold text-lg' : 'font-semibold'}`}>
+                      {frustrationText || "User frustration increases ↗"}
+                      {withoutStep === 4 && frustrationText.length < 37 && <span className="animate-pulse">|</span>}
+                    </p>
                   </div>
                 </div>
               </Card>
