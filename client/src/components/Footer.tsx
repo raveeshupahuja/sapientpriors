@@ -81,9 +81,9 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="mailto:raveeshupahuja@sapientpriors.com?subject=API Documentation Request" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/api-docs" className="text-muted-foreground hover:text-foreground transition-colors">
                   Documentation
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -125,9 +125,9 @@ export default function Footer() {
             <h3 className="font-semibold mb-4">Resources</h3>
             <ul className="space-y-3 text-sm">
               <li>
-                <a href="mailto:raveeshupahuja@sapientpriors.com?subject=API Documentation Request" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/api-docs" className="text-muted-foreground hover:text-foreground transition-colors">
                   API Docs
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="/#testimonials" onClick={(e) => handleHashLink('#testimonials', e)} className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer">

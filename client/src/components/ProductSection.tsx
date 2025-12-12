@@ -42,22 +42,81 @@ export default function ProductSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
-  const [showClickPrompt, setShowClickPrompt] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [animationComplete, setAnimationComplete] = useState(false);
   const isPausedRef = useRef(false);
-  const queueNextAnimationRef = useRef(false);
   const intervalsRef = useRef<NodeJS.Timeout[]>([]);
   const audioContextRef = useRef<AudioContext | null>(null);
+  const voiceChunksRef = useRef<{[key: number]: HTMLAudioElement}>({});
 
   // Refs for auto-scrolling email boxes
   const withoutTuesdayEmailRef = useRef<HTMLDivElement>(null);
   const withTuesdayEmailRef = useRef<HTMLDivElement>(null);
   const withWednesdayEmailRef = useRef<HTMLDivElement>(null);
 
+  // Master volume control for all sound effects (typing sounds, keyboard sounds, satisfaction sounds)
+  // Adjust this single value to tune all sound effects together (range: 0.0 to 1.0)
+  // Voice-over is always at 1.0, sound effects should be much quieter to not interfere
+  const SOUND_EFFECTS_VOLUME = 0.15;
+
   const clearAllIntervals = () => {
     intervalsRef.current.forEach(interval => clearTimeout(interval));
     intervalsRef.current = [];
+  };
+
+
+  // Initialize and play voice over chunks - returns promise that resolves when audio finishes
+  const playVoiceChunk = (chunkNumber: number): Promise<void> => {
+    return new Promise((resolve) => {
+      // Initialize chunk if not already created
+      if (!voiceChunksRef.current[chunkNumber]) {
+        voiceChunksRef.current[chunkNumber] = new Audio(`/voice-chunk-${chunkNumber}.mp3`);
+        // Chunk 5 is slightly louder, reduce to 60%
+        voiceChunksRef.current[chunkNumber].volume = chunkNumber === 5 ? 0.6 : 1.0;
+      }
+
+      const chunk = voiceChunksRef.current[chunkNumber];
+      chunk.currentTime = 0;
+
+      // Resolve promise when chunk ends
+      chunk.onended = () => {
+        resolve();
+      };
+
+      chunk.play().catch(error => {
+        console.log(`Voice chunk ${chunkNumber} play failed:`, error);
+        resolve(); // Resolve anyway to prevent blocking
+      });
+    });
+  };
+
+  const pauseVoiceOver = () => {
+    // Pause all active voice chunks
+    Object.values(voiceChunksRef.current).forEach(chunk => {
+      if (!chunk.paused) {
+        chunk.pause();
+      }
+    });
+  };
+
+  const resumeVoiceOver = () => {
+    // Resume any paused voice chunks
+    Object.values(voiceChunksRef.current).forEach(chunk => {
+      if (chunk.paused && chunk.currentTime > 0 && chunk.currentTime < chunk.duration) {
+        chunk.play().catch(error => {
+          console.log('Voice chunk resume failed:', error);
+        });
+      }
+    });
+  };
+
+  const stopVoiceOver = () => {
+    // Stop all voice chunks
+    Object.values(voiceChunksRef.current).forEach(chunk => {
+      chunk.pause();
+      chunk.currentTime = 0;
+    });
   };
 
   // Common utility function to auto-scroll content to bottom
@@ -106,9 +165,9 @@ export default function ProductSection() {
       oscillator1.frequency.value = 1800 + Math.random() * 400;
       oscillator1.type = frustrationLevel > 0 ? 'sawtooth' : 'sine';
 
-      const volume1 = 0.05 * frustrationMultiplier;
+      const volume1 = SOUND_EFFECTS_VOLUME * 0.02 * frustrationMultiplier;
       gainNode1.gain.setValueAtTime(volume1, ctx.currentTime);
-      gainNode1.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.015);
+      gainNode1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.015);
 
       oscillator1.start(ctx.currentTime);
       oscillator1.stop(ctx.currentTime + 0.015);
@@ -123,9 +182,9 @@ export default function ProductSection() {
       oscillator2.frequency.value = 600 + Math.random() * 200;
       oscillator2.type = 'triangle';
 
-      const volume2 = 0.02 * frustrationMultiplier;
+      const volume2 = SOUND_EFFECTS_VOLUME * 0.01 * frustrationMultiplier;
       gainNode2.gain.setValueAtTime(volume2, ctx.currentTime + 0.003);
-      gainNode2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.02);
+      gainNode2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.02);
 
       oscillator2.start(ctx.currentTime + 0.003);
       oscillator2.stop(ctx.currentTime + 0.02);
@@ -150,9 +209,9 @@ export default function ProductSection() {
         noiseFilter.type = 'highpass';
         noiseFilter.frequency.value = 800;
 
-        const impactVolume = 0.06 * frustrationLevel;
+        const impactVolume = SOUND_EFFECTS_VOLUME * 0.03 * frustrationLevel;
         noiseGain.gain.setValueAtTime(impactVolume, ctx.currentTime);
-        noiseGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.015);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.015);
 
         noiseSource.start(ctx.currentTime);
       }
@@ -182,8 +241,8 @@ export default function ProductSection() {
         oscillator.type = 'triangle'; // Warmer sound
 
         const startTime = ctx.currentTime + (i * 0.005);
-        gainNode.gain.setValueAtTime(i === 0 ? 0.025 : 0.015, startTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.025);
+        gainNode.gain.setValueAtTime(SOUND_EFFECTS_VOLUME * (i === 0 ? 0.015 : 0.008), startTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + 0.025);
 
         oscillator.start(startTime);
         oscillator.stop(startTime + 0.025);
@@ -219,10 +278,9 @@ export default function ProductSection() {
           oscillator.type = harmIndex === 0 ? 'sawtooth' : 'square';
 
           const startTime = ctx.currentTime + time;
-          // Louder attack, quick decay - simulates hard key strike
-          const volume = harmIndex === 0 ? 0.12 : 0.06 / (harmIndex + 1);
+          const volume = SOUND_EFFECTS_VOLUME * (harmIndex === 0 ? 0.25 : 0.12 / (harmIndex + 1));
           gainNode.gain.setValueAtTime(volume, startTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.04);
+          gainNode.gain.exponentialRampToValueAtTime(0.003, startTime + 0.04);
 
           oscillator.start(startTime);
           oscillator.stop(startTime + 0.04);
@@ -248,8 +306,8 @@ export default function ProductSection() {
           noiseFilter.type = 'lowpass';
           noiseFilter.frequency.value = 200 + Math.random() * 100;
 
-          noiseGain.gain.setValueAtTime(0.08, ctx.currentTime + time);
-          noiseGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + time + 0.03);
+          noiseGain.gain.setValueAtTime(SOUND_EFFECTS_VOLUME * 0.18, ctx.currentTime + time);
+          noiseGain.gain.exponentialRampToValueAtTime(0.003, ctx.currentTime + time + 0.03);
 
           noiseSource.start(ctx.currentTime + time);
         }
@@ -279,8 +337,8 @@ export default function ProductSection() {
         oscillator.type = 'sine';
 
         const startTime = ctx.currentTime + (index * 0.1);
-        gainNode.gain.setValueAtTime(0.06, startTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.3);
+        gainNode.gain.setValueAtTime(SOUND_EFFECTS_VOLUME * 0.15, startTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.003, startTime + 0.3);
 
         oscillator.start(startTime);
         oscillator.stop(startTime + 0.3);
@@ -302,6 +360,7 @@ export default function ProductSection() {
     cursorPositionSetter?: (position: number) => void;
     insertPosition?: number;
     baseText?: string;
+    onLengthThreshold?: { length: number; callback: () => void }; // NEW: Trigger callback when text reaches threshold
   }) => {
     const {
       text,
@@ -314,6 +373,7 @@ export default function ProductSection() {
       cursorPositionSetter,
       insertPosition,
       baseText,
+      onLengthThreshold,
     } = options;
 
     // Set typing state to true
@@ -337,61 +397,151 @@ export default function ProductSection() {
       });
     }
 
-    // Type character by character
-    for (let i = 0; i <= text.length; i++) {
-      // Wait while paused
-      await new Promise<void>(resolve => {
-        const checkPause = () => {
-          if (isPausedRef.current) {
-            const timeout = setTimeout(checkPause, 100);
-            intervalsRef.current.push(timeout);
-          } else {
-            resolve();
-          }
-        };
-        checkPause();
-      });
+    // USER TYPING: Character-by-character
+    if (soundType === 'user') {
+      let accumulatedText = '';
+      let thresholdTriggered = false;
 
-      let newText: string;
+      for (let i = 0; i <= text.length; i++) {
+        // Wait while paused
+        await new Promise<void>(resolve => {
+          const checkPause = () => {
+            if (isPausedRef.current) {
+              const timeout = setTimeout(checkPause, 100);
+              intervalsRef.current.push(timeout);
+            } else {
+              resolve();
+            }
+          };
+          checkPause();
+        });
 
-      if (insertPosition !== undefined && baseText !== undefined) {
-        // Inserting text at a specific position
-        newText = baseText.substring(0, insertPosition) + text.substring(0, i) + baseText.substring(insertPosition);
-      } else {
-        // Normal typing from start
-        newText = text.substring(0, i);
-      }
+        accumulatedText = text.substring(0, i);
+        let newText: string;
 
-      setter(newText);
+        if (insertPosition !== undefined && baseText !== undefined) {
+          // Inserting text at a specific position
+          newText = baseText.substring(0, insertPosition) + accumulatedText + baseText.substring(insertPosition);
+        } else {
+          // Normal typing from start
+          newText = accumulatedText;
+        }
 
-      // Update cursor position if tracking
-      if (cursorPositionSetter) {
-        const cursorPos = insertPosition !== undefined ? insertPosition + i : i;
-        cursorPositionSetter(cursorPos);
-      }
+        setter(newText);
 
-      // Play typing sound for non-space characters
-      if (soundType !== 'none' && i > 0 && text[i - 1] !== ' ' && text[i - 1] !== '\n') {
-        if (soundType === 'user') {
+        // Check length threshold and trigger callback once
+        if (onLengthThreshold && !thresholdTriggered && newText.length >= onLengthThreshold.length) {
+          onLengthThreshold.callback();
+          thresholdTriggered = true;
+        }
+
+        // Update cursor position if tracking
+        if (cursorPositionSetter) {
+          const cursorPos = insertPosition !== undefined ? insertPosition + accumulatedText.length : accumulatedText.length;
+          cursorPositionSetter(cursorPos);
+        }
+
+        // Play typing sound for each character (except spaces)
+        if (i > 0 && text[i - 1] !== ' ') {
           playUserTypingSound(frustrationLevel);
-        } else if (soundType === 'ai') {
-          playAITypingSound();
+        }
+
+        // Wait before next character
+        await new Promise<void>(resolve => {
+          const checkPause = () => {
+            if (isPausedRef.current) {
+              const timeout = setTimeout(checkPause, 100);
+              intervalsRef.current.push(timeout);
+            } else {
+              const timeout = setTimeout(resolve, speed);
+              intervalsRef.current.push(timeout);
+            }
+          };
+          checkPause();
+        });
+      }
+    }
+    // AI TYPING: Type word by word
+    else {
+      const words: string[] = [];
+      let currentWord = '';
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        if (char === ' ' || char === '\n') {
+          if (currentWord) {
+            words.push(currentWord);
+            currentWord = '';
+          }
+          words.push(char);
+        } else {
+          currentWord += char;
         }
       }
+      if (currentWord) {
+        words.push(currentWord);
+      }
 
-      // Wait before next character
-      await new Promise<void>(resolve => {
-        const checkPause = () => {
-          if (isPausedRef.current) {
-            const timeout = setTimeout(checkPause, 100);
-            intervalsRef.current.push(timeout);
-          } else {
-            const timeout = setTimeout(resolve, speed);
-            intervalsRef.current.push(timeout);
-          }
-        };
-        checkPause();
-      });
+      // Type word by word
+      let accumulatedText = '';
+      let thresholdTriggered = false;
+
+      for (let i = 0; i <= words.length; i++) {
+        // Wait while paused
+        await new Promise<void>(resolve => {
+          const checkPause = () => {
+            if (isPausedRef.current) {
+              const timeout = setTimeout(checkPause, 100);
+              intervalsRef.current.push(timeout);
+            } else {
+              resolve();
+            }
+          };
+          checkPause();
+        });
+
+        let newText: string;
+
+        if (insertPosition !== undefined && baseText !== undefined) {
+          accumulatedText = words.slice(0, i).join('');
+          newText = baseText.substring(0, insertPosition) + accumulatedText + baseText.substring(insertPosition);
+        } else {
+          accumulatedText = words.slice(0, i).join('');
+          newText = accumulatedText;
+        }
+
+        setter(newText);
+
+        // Check length threshold and trigger callback once
+        if (onLengthThreshold && !thresholdTriggered && newText.length >= onLengthThreshold.length) {
+          onLengthThreshold.callback();
+          thresholdTriggered = true;
+        }
+
+        // Update cursor position if tracking
+        if (cursorPositionSetter) {
+          const cursorPos = insertPosition !== undefined ? insertPosition + accumulatedText.length : accumulatedText.length;
+          cursorPositionSetter(cursorPos);
+        }
+
+        // Play typing sound for words (not spaces/newlines)
+        if (soundType === 'ai' && i > 0 && words[i - 1] !== ' ' && words[i - 1] !== '\n') {
+          playAITypingSound();
+        }
+
+        // Wait before next word
+        await new Promise<void>(resolve => {
+          const checkPause = () => {
+            if (isPausedRef.current) {
+              const timeout = setTimeout(checkPause, 100);
+              intervalsRef.current.push(timeout);
+            } else {
+              const timeout = setTimeout(resolve, speed);
+              intervalsRef.current.push(timeout);
+            }
+          };
+          checkPause();
+        });
+      }
     }
 
     // Set typing state to false
@@ -402,13 +552,12 @@ export default function ProductSection() {
 
   const runAnimationSequence = async () => {
     if (isAnimating) {
-      // If already animating, queue another round
-      queueNextAnimationRef.current = true;
-      return;
+      return; // Don't start another animation if one is already running
     }
 
     setIsAnimating(true);
     setIsPaused(false);
+    setAnimationComplete(false);
     isPausedRef.current = false;
     clearAllIntervals();
 
@@ -458,106 +607,158 @@ export default function ProductSection() {
 
     try {
       // Show labels first
-      await wait(300);
+      await wait(150);
       setShowWithoutLabel(true);
       setShowWithLabel(true);
-      await wait(500);
 
       // === WITHOUT SAPIENTPRIORS (LEFT SIDE) ===
 
-      // Monday - User types preference (calm)
+      // Monday - User types preference (calm) - SLOW USER SPEED
+      // Voice Chunk 1: Play during "I prefer concise emails" typing
       setWithoutStep(1);
+      const voiceChunk1Promise = playVoiceChunk(1);
+
       await typeWithCursor({
         text: '"I prefer concise emails"',
         setter: setWithoutMondayText,
-        speed: 50,
-        startDelay: 800,
+        speed: 80,
+        startDelay: 400,
         soundType: 'user',
         frustrationLevel: 0,
         typingStateSetter: setIsTypingWithoutMonday,
       });
-      await wait(1200);
 
-      // Tuesday - AI types verbose quarterly report analysis
+      // Wait for voice chunk 1 to finish
+      await voiceChunk1Promise;
+      
+
+      // Tuesday - AI types verbose quarterly report analysis - FAST AI SPEED (30ms per word)
+      // Voice Chunk 2: Play during Tuesday long email typing
       setWithoutStep(2);
+      const voiceChunk2Promise = playVoiceChunk(2);
+
       await typeWithCursor({
         text: 'Hi John,\n\nAfter conducting a comprehensive analysis of our Q4 performance data, I wanted to share my findings with you. Based on the revenue chart (Q4_Revenue_Chart.xlsx), we can observe a significant 12% increase compared to Q3. This growth trajectory is particularly noteworthy because it indicates strong market momentum heading into year-end.\n\nLooking at the Performance_Metrics.pdf, the underlying drivers show that customer acquisition costs decreased by 8% while retention rates improved to 94%. The reason for this improvement appears to be the product enhancements we rolled out in October, which according to the user feedback data, resonated well with our enterprise segment.\n\nThe Expense_Analysis.csv reveals that our operational efficiency improved as well. Marketing spend remained flat quarter-over-quarter, yet we achieved higher conversion rates. This suggests our targeting algorithms are working effectively. Additionally, I noticed that our infrastructure costs dropped 5% due to the cloud optimization initiative.\n\nGiven these positive indicators across multiple dimensions, I believe we should schedule a review meeting to discuss Q1 strategy. Does Friday at 2 PM work for your calendar?\n\n📊 Q4_Revenue_Chart.xlsx\n📈 Performance_Metrics.pdf\n📉 Expense_Analysis.csv\n\nThanks',
         setter: setWithoutTuesdayText,
-        speed: 25,
-        startDelay: 500,
+        speed: 30,
+        startDelay: 250,
         soundType: 'ai',
         typingStateSetter: setIsTypingWithoutTuesday,
+        onLengthThreshold: {
+          length: 350, // Trigger when text reaches 350 chars (when "Too long again!" message appears)
+          callback: () => {
+            setWithoutFrustration(1);
+          }
+        }
       });
-      await wait(800);
-      setWithoutFrustration(1);
-      await wait(500);
-      // User has to remind again (frustrated - level 1)
+
+      // Wait for voice chunk 2 to finish
+      await voiceChunk2Promise;
+      await wait(450);
+
+      // User has to remind again (frustrated - level 1) - SLOW USER SPEED
+      // Voice Chunk 3: Play during "Keep it concise!" reminder typing
+      const voiceChunk3Promise = playVoiceChunk(3);
+
       await typeWithCursor({
         text: '"Keep it concise!"',
         setter: setWithoutTuesdayReminderText,
-        speed: 60,
+        speed: 80,
         soundType: 'user',
         frustrationLevel: 1,
         typingStateSetter: setIsTypingWithoutTuesdayReminder,
       });
-      await wait(500);
-      playFrustratedKeyboardSound(); // Play frustrated sound when frustration increases
-      await wait(1500);
 
-      // Wednesday - Still long emails
+      
+      await wait(250);
+      playFrustratedKeyboardSound(); // Play frustrated sound when frustration increases
+      await wait(750);
+      
+      // Wednesday - Still long emails - FAST AI SPEED (30ms per word)
+      // Voice Chunk 4: Play during Wednesday "Still generates" typing
       setWithoutStep(3);
+      
+
       await typeWithCursor({
         text: 'Still generates long emails, user frustrated',
         setter: setWithoutWednesdayText,
         speed: 30,
-        startDelay: 500,
+        startDelay: 250,
         soundType: 'ai',
         typingStateSetter: setIsTypingWithoutWednesday,
       });
-      await wait(800);
+      // Wait for voice chunk 3 to finish
+      
+      
+
+      // Wait for voice chunk 4 to finish
+      
+      await wait(400);
+
       setWithoutFrustration(2);
       playFrustratedKeyboardSound(); // Play frustrated sound again when frustration increases more
-      await wait(1000);
-
-      // Frustration indicator typing animation - step 4
+      await voiceChunk3Promise;
+      const voiceChunk4Promise = playVoiceChunk(4);
+      // Frustration indicator typing animation - step 4 - SLOW USER SPEED
+      // Voice Chunk 5: Play during frustration indicator typing
       setWithoutStep(4);
+      
+
       await typeWithCursor({
         text: "User frustration increases ↗",
         setter: setFrustrationText,
-        speed: 60, // Average speed (will vary in real implementation)
-        startDelay: 500,
+        speed: 80,
+        startDelay: 250,
         soundType: 'user',
         frustrationLevel: 2,
         typingStateSetter: setIsTypingFrustration,
       });
-      await wait(1500);
+      await voiceChunk4Promise;
+
+      // Pause before transition voice over
+      await wait(400);
+      const voiceChunk5Promise = playVoiceChunk(5);
+      // Wait for voice chunk 5 to finish
+      await voiceChunk5Promise;
+      // Pause after transition voice over
+      await wait(400);
 
       // === WITH SAPIENTPRIORS (RIGHT SIDE) ===
 
-      // Monday - User types, system learns (calm)
+      // Monday - User types, system learns (calm) - SLOW USER SPEED
+      // Voice Chunk 6: Play during Monday With "I prefer concise emails" typing
       setWithStep(1);
+      const voiceChunk6Promise = playVoiceChunk(6);
+
       await typeWithCursor({
         text: '"I prefer concise emails"',
         setter: setWithMondayText,
-        speed: 50,
-        startDelay: 800,
+        speed: 80,
+        startDelay: 400,
         soundType: 'user',
         frustrationLevel: 0,
         typingStateSetter: setIsTypingWithMonday,
       });
-      await wait(1500);
 
-      // Tuesday - AI types suggestion (already more concise from learning)
+      // Wait for voice chunk 6 to finish
+      await voiceChunk6Promise;
+
+      // Tuesday - AI types suggestion (already more concise from learning) - FAST AI SPEED (30ms per word)
+      // Voice Chunk 7: Play during Tuesday With concise email typing
       setWithStep(2);
+      const voiceChunk7Promise = playVoiceChunk(7);
+
       await typeWithCursor({
         text: 'Hi John,\n\nQ4 analysis: Revenue up 12% vs Q3, strong market momentum. Customer acquisition costs down 8%, retention at 94% thanks to October product updates. Operational efficiency improved—marketing ROI up, infrastructure costs down 5%.\n\nMeeting Friday 2pm to discuss Q1 strategy?\n\n📊 Q4_Revenue_Chart.xlsx\n📈 Performance_Metrics.pdf\n📉 Expense_Analysis.csv\n\nThanks',
         setter: setWithTuesdayAiText,
-        speed: 25,
-        startDelay: 500,
+        speed: 30,
+        startDelay: 250,
         soundType: 'ai',
         typingStateSetter: setIsTypingWithTuesday,
       });
-      await wait(1200);
+
+      // Wait for voice chunk 7 to finish
+      await voiceChunk7Promise;
 
       // User edits the text (calm, no frustration) - just adds TLDR at top
       setIsEditing(true);
@@ -565,13 +766,16 @@ export default function ProductSection() {
       // Initialize user edit text with the AI's concise text
       const aiConciseText = "Hi John,\n\nQ4 analysis: Revenue up 12% vs Q3, strong market momentum. Customer acquisition costs down 8%, retention at 94% thanks to October product updates. Operational efficiency improved—marketing ROI up, infrastructure costs down 5%.\n\nMeeting Friday 2pm to discuss Q1 strategy?\n\n📊 Q4_Revenue_Chart.xlsx\n📈 Performance_Metrics.pdf\n📉 Expense_Analysis.csv\n\nThanks";
       setWithTuesdayUserEdit(aiConciseText);
-      await wait(500);
+      await wait(250);
 
-      // User simply adds TLDR at the top (after "Hi John,\n\n")
+      // Voice Chunk 8: Play during user edit and learning moment
+      const voiceChunk8Promise = playVoiceChunk(8);
+
+      // User simply adds TLDR at the top (after "Hi John,\n\n") - SLOW USER SPEED
       await typeWithCursor({
         text: "TLDR: Q4 strong—revenue +12%, CAC -8%, retention 94%. Meeting Friday 2pm?\n\n",
         setter: setWithTuesdayUserEdit,
-        speed: 50,
+        speed: 80,
         soundType: 'user',
         frustrationLevel: 0,
         cursorPositionSetter: setEditCursorPosition,
@@ -581,43 +785,41 @@ export default function ProductSection() {
 
       setIsEditing(false);
       setEditingComplete(true);
-      await wait(800);
+      await wait(400);
+
       setWithStep(3);
       setWithSatisfaction(1);
       playSatisfactionSound(); // Play satisfaction sound
-      await wait(2000);
 
-      // Wednesday - AI uses learned preference
+      // Wait for voice chunk 8 to finish
+      await voiceChunk8Promise;
+
+      // Wednesday - AI uses learned preference - FAST AI SPEED (30ms per word)
       setWithStep(4);
+
+      // Voice Chunk 9: Start playing but don't block animation
+      const voiceChunk9Promise = playVoiceChunk(9);
+
       await typeWithCursor({
         text: 'Hi Sarah,\n\nTLDR: Budget approved. Confirming by EOD.\n\nRe: Budget approval—Good news on the Q1 marketing budget request. Finance team reviewed the proposal during this morning\'s meeting and approved the full $50K allocation. They were particularly impressed with the ROI projections from our last campaign.\n\nI\'ll send the formal confirmation with fund codes by end of day. You can start the vendor outreach process.\n\nThanks',
         setter: setWithWednesdayText,
-        speed: 25,
-        startDelay: 500,
+        speed: 30,
+        startDelay: 250,
         soundType: 'ai',
         typingStateSetter: setIsTypingWithWednesday,
       });
-      await wait(800);
+
+      await wait(400);
       setShowHighlight(true);
       setWithSatisfaction(2);
       playSatisfactionSound(); // Play satisfaction sound again
-      await wait(4000);
+      await wait(2000);
+
+      // Wait for voice chunk 9 to finish before ending animation
+      await voiceChunk9Promise;
 
       setIsAnimating(false);
-
-      // Auto-replay after a pause if still in view
-      if (isInView) {
-        await wait(3000); // Pause for 3 seconds before restarting
-        if (isInView && !queueNextAnimationRef.current) {
-          runAnimationSequence();
-        }
-      }
-
-      // Check if another animation was queued
-      if (queueNextAnimationRef.current && isInView) {
-        queueNextAnimationRef.current = false;
-        runAnimationSequence();
-      }
+      setAnimationComplete(true);
     } catch (error) {
       // Animation was interrupted, ignore
       setIsAnimating(false);
@@ -631,12 +833,18 @@ export default function ProductSection() {
           if (entry.isIntersecting) {
             console.log('Section in view');
             setIsInView(true);
-            setShowClickPrompt(true);
+            // Auto-start animation when section comes into view
+            if (!hasUserInteracted) {
+              initAudioContext();
+              setHasUserInteracted(true);
+            }
           } else {
             console.log('Section out of view - stopping animation');
             setIsInView(false);
-            setShowClickPrompt(false);
+            setIsAnimating(false);
+            setAnimationComplete(false);
             clearAllIntervals();
+            stopVoiceOver(); // Stop voice over when section leaves view
           }
         });
       },
@@ -653,14 +861,13 @@ export default function ProductSection() {
     };
   }, []);
 
-  // Handle user interaction to start animation
+  // Handle auto-start animation when section is in view
   useEffect(() => {
-    if (isInView && hasUserInteracted) {
-      console.log('User has interacted - starting animation');
-      setShowClickPrompt(false);
+    if (isInView && hasUserInteracted && !isAnimating) {
+      console.log('Auto-starting animation');
       runAnimationSequence();
     }
-  }, [isInView, hasUserInteracted]);
+  }, [isInView, hasUserInteracted, isAnimating]);
 
   // Auto-scroll for red side Tuesday email (without SapientPriors)
   useEffect(() => {
@@ -687,12 +894,8 @@ export default function ProductSection() {
   }, [withWednesdayText, isTypingWithWednesday]);
 
   const handleContainerClick = () => {
-    if (!hasUserInteracted && isInView) {
-      // First click - initialize audio context and start first animation
-      initAudioContext();
-      setHasUserInteracted(true);
-    } else if (hasUserInteracted && isInView) {
-      // Subsequent clicks - queue another animation round
+    // Allow clicking to restart animation if complete or not started
+    if (hasUserInteracted && isInView && (animationComplete || !isAnimating)) {
       runAnimationSequence();
     }
   };
@@ -707,29 +910,38 @@ export default function ProductSection() {
             className="mb-16 max-w-6xl mx-auto relative cursor-pointer"
             onClick={handleContainerClick}
           >
-            {/* Click prompt overlay */}
-            {showClickPrompt && !hasUserInteracted && (
-              <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-lg border-2 border-primary/50 animate-pulse">
-                <div className="text-center p-8">
-                  <p className="text-2xl font-bold mb-2">Click to start demo</p>
-                  <p className="text-muted-foreground">Interactive demonstration with sound</p>
-                </div>
-              </div>
-            )}
 
-            {/* Play/Pause button */}
+            {/* Pause/Play/Replay button */}
             {hasUserInteracted && (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  const newPausedState = !isPaused;
-                  setIsPaused(newPausedState);
-                  isPausedRef.current = newPausedState;
+
+                  if (animationComplete) {
+                    // Replay the animation
+                    runAnimationSequence();
+                  } else {
+                    // Toggle pause/play
+                    const newPausedState = !isPaused;
+                    setIsPaused(newPausedState);
+                    isPausedRef.current = newPausedState;
+
+                    // Control voice over with pause state
+                    if (newPausedState) {
+                      pauseVoiceOver();
+                    } else {
+                      resumeVoiceOver();
+                    }
+                  }
                 }}
                 className="absolute top-4 right-4 z-20 p-3 bg-primary text-primary-foreground rounded-full shadow-lg hover:scale-110 transition-all duration-200"
-                aria-label={isPaused ? "Resume animation" : "Pause animation"}
+                aria-label={animationComplete ? "Replay animation" : (isPaused ? "Resume animation" : "Pause animation")}
               >
-                {isPaused ? (
+                {animationComplete ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+                  </svg>
+                ) : isPaused ? (
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M8 5v14l11-7z"/>
                   </svg>

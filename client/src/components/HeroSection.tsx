@@ -161,7 +161,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-background">
+    <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center bg-background">
       <div className="max-w-3xl mx-auto px-6 lg:px-8 text-center pb-16">
         {/* Main Headline */}
         <h1
@@ -184,24 +184,28 @@ export default function HeroSection() {
         </p>
 
         {/* Single CTA */}
-        <Button
-          size="lg"
-          onClick={scrollToProduct}
-          className="px-8 text-lg"
-          data-testid="button-hero-view-demo"
-        >
-          View Demo
-        </Button>
+        <div className="flex justify-center">
+          <Button
+            size="lg"
+            onClick={scrollToProduct}
+            className="px-8 text-lg"
+            data-testid="button-hero-view-demo"
+          >
+            View Demo
+          </Button>
+        </div>
       </div>
 
       {/* Scroll Indicator */}
-      <button
-        onClick={scrollToProduct}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer animate-bounce"
-        aria-label="Scroll to learn more"
-      >
-        <ChevronDown className="w-8 h-8" />
-      </button>
+      <div className="absolute bottom-8 left-0 right-0 flex justify-center">
+        <button
+          onClick={scrollToProduct}
+          className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer animate-bounce flex items-center justify-center"
+          aria-label="Scroll to learn more"
+        >
+          <ChevronDown className="w-8 h-8" />
+        </button>
+      </div>
     </section>
   );
 }
