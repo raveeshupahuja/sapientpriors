@@ -55,6 +55,15 @@ export default function ProductSection() {
   const withTuesdayEmailRef = useRef<HTMLDivElement>(null);
   const withWednesdayEmailRef = useRef<HTMLDivElement>(null);
 
+  // Refs for auto-scrolling to active animation steps
+  const withoutMondayRef = useRef<HTMLDivElement>(null);
+  const withoutTuesdayRef = useRef<HTMLDivElement>(null);
+  const withoutWednesdayRef = useRef<HTMLDivElement>(null);
+  const frustrationRef = useRef<HTMLDivElement>(null);
+  const withMondayRef = useRef<HTMLDivElement>(null);
+  const withTuesdayRef = useRef<HTMLDivElement>(null);
+  const withWednesdayRef = useRef<HTMLDivElement>(null);
+
   // Master volume control for all sound effects (typing sounds, keyboard sounds, satisfaction sounds)
   // Adjust this single value to tune all sound effects together (range: 0.0 to 1.0)
   // Voice-over is always at 1.0, sound effects should be much quieter to not interfere
@@ -893,6 +902,40 @@ export default function ProductSection() {
     }
   }, [withWednesdayText, isTypingWithWednesday]);
 
+  // Auto-scroll to bring active animation step into view
+  useEffect(() => {
+    if (!isAnimating) return;
+
+    let activeRef: React.RefObject<HTMLDivElement> | null = null;
+
+    // Determine which section is currently active based on steps
+    // Check withStep first (right side) to prioritize when transitioning from left to right
+    if (withStep === 4) {
+      activeRef = withWednesdayRef;
+    } else if (withStep === 2 || withStep === 3) {
+      activeRef = withTuesdayRef;
+    } else if (withStep === 1) {
+      activeRef = withMondayRef;
+    } else if (withoutStep === 4) {
+      activeRef = frustrationRef;
+    } else if (withoutStep === 3) {
+      activeRef = withoutWednesdayRef;
+    } else if (withoutStep === 2) {
+      activeRef = withoutTuesdayRef;
+    } else if (withoutStep === 1) {
+      activeRef = withoutMondayRef;
+    }
+
+    // Scroll the active section into view
+    if (activeRef?.current) {
+      activeRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'nearest'
+      });
+    }
+  }, [withoutStep, withStep, isAnimating]);
+
   const handleContainerClick = () => {
     // Allow clicking to restart animation if complete or not started
     if (hasUserInteracted && isInView && (animationComplete || !isAnimating)) {
@@ -963,7 +1006,7 @@ export default function ProductSection() {
                 </div>
                 <div className="space-y-2">
                   {/* Monday */}
-                  <div className={`bg-muted/50 rounded-lg p-3 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 1 ? 'opacity-100 scale-100' : 'opacity-30 scale-95'} ${withoutStep === 1 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
+                  <div ref={withoutMondayRef} className={`bg-muted/50 rounded-lg p-3 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 1 ? 'opacity-100 scale-100' : 'opacity-30 scale-95'} ${withoutStep === 1 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
                     <p className="text-xs font-semibold mb-1.5">Monday - User says:</p>
                     <p className="text-[11px] text-muted-foreground italic min-h-[16px]">
                       {withoutMondayText}
@@ -980,7 +1023,7 @@ export default function ProductSection() {
                   <div className={`text-center text-lg transition-all duration-500 ${withoutStep >= 2 ? 'scale-110 text-destructive' : 'scale-100 text-destructive/50'}`}>↓</div>
 
                   {/* Tuesday */}
-                  <div className={`bg-muted/50 rounded-lg p-3 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 2 ? 'opacity-100' : 'opacity-30'} ${withoutStep === 2 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
+                  <div ref={withoutTuesdayRef} className={`bg-muted/50 rounded-lg p-3 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 2 ? 'opacity-100' : 'opacity-30'} ${withoutStep === 2 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
                     <p className="text-xs font-semibold mb-1.5">Tuesday - AI suggests:</p>
                     <div ref={withoutTuesdayEmailRef} className="text-[10px] bg-background/50 p-2 rounded mb-2 font-mono whitespace-pre-wrap min-h-[200px] max-h-[200px] overflow-y-auto relative">
                       {withoutTuesdayText}
@@ -1014,7 +1057,7 @@ export default function ProductSection() {
                   <div className={`text-center text-lg transition-all duration-500 ${withoutStep >= 3 ? 'scale-110 text-destructive' : 'scale-100 text-destructive/50'}`}>↓</div>
 
                   {/* Wednesday */}
-                  <div className={`bg-muted/50 rounded-lg p-3 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 3 ? 'opacity-100' : 'opacity-30'} ${withoutStep === 3 && withStep === 0 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
+                  <div ref={withoutWednesdayRef} className={`bg-muted/50 rounded-lg p-3 border-l-4 border-destructive/50 transition-all duration-500 ${withoutStep >= 3 ? 'opacity-100' : 'opacity-30'} ${withoutStep === 3 && withStep === 0 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
                     <p className="text-xs font-semibold mb-1.5">Wednesday - Same problem:</p>
                     <p className="text-[11px] text-muted-foreground min-h-[16px]">
                       {withoutWednesdayText}
@@ -1023,7 +1066,7 @@ export default function ProductSection() {
                   </div>
 
                   {/* Frustration indicator */}
-                  <div className={`mt-3 p-3 bg-destructive/5 rounded-lg transition-all duration-500 ${withoutFrustration >= 2 ? 'bg-destructive/20' : ''} ${withoutStep === 4 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
+                  <div ref={frustrationRef} className={`mt-3 p-3 bg-destructive/5 rounded-lg transition-all duration-500 ${withoutFrustration >= 2 ? 'bg-destructive/20' : ''} ${withoutStep === 4 ? 'ring-2 ring-destructive ring-offset-2' : ''}`}>
                     {frustrationText && (
                       <p className={`text-xs text-destructive transition-all duration-300 ${withoutFrustration >= 2 ? 'font-bold text-sm' : 'font-semibold'}`}>
                         {frustrationText}
@@ -1043,7 +1086,7 @@ export default function ProductSection() {
                 </div>
                 <div className="space-y-2">
                   {/* Monday */}
-                  <div className={`bg-background rounded-lg p-3 border-l-4 border-green-500/50 transition-all duration-500 ${withStep >= 1 ? 'opacity-100 scale-100' : 'opacity-30 scale-95'} ${withStep === 1 ? 'ring-2 ring-green-500 ring-offset-2' : ''}`}>
+                  <div ref={withMondayRef} className={`bg-background rounded-lg p-3 border-l-4 border-green-500/50 transition-all duration-500 ${withStep >= 1 ? 'opacity-100 scale-100' : 'opacity-30 scale-95'} ${withStep === 1 ? 'ring-2 ring-green-500 ring-offset-2' : ''}`}>
                     <p className="text-xs font-semibold mb-1.5">Monday - User says:</p>
                     <p className="text-[11px] text-muted-foreground italic mb-1.5 min-h-[16px]">
                       {withMondayText}
@@ -1063,7 +1106,7 @@ export default function ProductSection() {
                   <div className={`text-center text-lg transition-all duration-500 ${withStep >= 2 ? 'scale-110 text-green-500' : 'scale-100 text-green-500/50'}`}>↓</div>
 
                   {/* Tuesday */}
-                  <div className={`bg-background rounded-lg p-3 border-l-4 border-green-500/50 relative transition-all duration-500 ${withStep >= 2 ? 'opacity-100' : 'opacity-30'} ${(withStep === 2 || withStep === 3) ? 'ring-2 ring-green-500 ring-offset-2' : ''}`}>
+                  <div ref={withTuesdayRef} className={`bg-background rounded-lg p-3 border-l-4 border-green-500/50 relative transition-all duration-500 ${withStep >= 2 ? 'opacity-100' : 'opacity-30'} ${(withStep === 2 || withStep === 3) ? 'ring-2 ring-green-500 ring-offset-2' : ''}`}>
                     <p className="text-xs font-semibold mb-1.5">Tuesday - AI suggests:</p>
                     <div ref={withTuesdayEmailRef} className={`text-[10px] bg-muted/30 p-2 rounded mb-1.5 font-mono whitespace-pre-wrap relative min-h-[200px] max-h-[200px] overflow-y-auto ${isEditing ? 'shadow-lg' : ''}`}>
                       {!isEditing && !editingComplete ? (
@@ -1106,7 +1149,7 @@ export default function ProductSection() {
                   <div className={`text-center text-lg transition-all duration-500 ${withStep >= 4 ? 'scale-110 text-green-500' : 'scale-100 text-green-500/50'}`}>↓</div>
 
                   {/* Wednesday */}
-                  <div className={`bg-background rounded-lg p-3 border-l-4 border-green-500/50 transition-all duration-500 ${withStep >= 4 ? 'opacity-100' : 'opacity-30'} ${withStep === 4 ? 'ring-2 ring-green-500 ring-offset-2' : ''}`}>
+                  <div ref={withWednesdayRef} className={`bg-background rounded-lg p-3 border-l-4 border-green-500/50 transition-all duration-500 ${withStep >= 4 ? 'opacity-100' : 'opacity-30'} ${withStep === 4 ? 'ring-2 ring-green-500 ring-offset-2' : ''}`}>
                     <p className="text-xs font-semibold mb-1.5">Wednesday - AI suggests:</p>
                     <div ref={withWednesdayEmailRef} className="text-[10px] bg-muted/30 p-2 rounded mb-1.5 font-mono whitespace-pre-wrap min-h-[120px] max-h-[200px] overflow-y-auto">
                       {withWednesdayText.includes('TLDR:') && showHighlight ? (
