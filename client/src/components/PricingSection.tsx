@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Check, Rocket, Users, Zap } from "lucide-react";
+import { Rocket, Users, Zap } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -37,8 +37,8 @@ export default function PricingSection() {
 
       if (response.ok) {
         toast({
-          title: "Application Submitted!",
-          description: "We'll review your application and get back to you within 48 hours.",
+          title: "Message Received!",
+          description: "We'll get back to you within 48 hours to schedule your free consultation.",
         });
         setFormData({
           name: "",
@@ -93,7 +93,7 @@ export default function PricingSection() {
             We're currently in early beta and accepting a limited number of partners to help shape the future of continuous learning AI.
           </p>
           <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
-            Apply below to discuss beta access and pricing tailored to your needs.
+            Get in touch below for a <span className="font-semibold text-primary">free consultation</span> and to discuss beta access tailored to your needs.
           </p>
         </div>
 
@@ -113,7 +113,12 @@ export default function PricingSection() {
         {/* Beta Application Form */}
         <div className="max-w-2xl mx-auto">
           <Card className="p-8 lg:p-10">
-            <h3 className="text-2xl font-bold mb-6 text-center">Apply for Beta Access</h3>
+            <div className="flex justify-center mb-4">
+              <span className="inline-block px-4 py-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-sm font-semibold">
+                Free Consultation
+              </span>
+            </div>
+            <h3 className="text-2xl font-bold mb-6 text-center">Get in Touch for Beta Access</h3>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -178,11 +183,11 @@ export default function PricingSection() {
                 size="lg"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Submitting..." : "Apply for Beta Access"}
+                {isSubmitting ? "Submitting..." : "Get in Touch"}
               </Button>
 
-              <p className="text-xs text-center text-muted-foreground">
-                We'll review your application and get back to you within 48 hours.
+              <p className="text-sm text-center text-muted-foreground">
+                <span className="font-semibold text-primary">Free consultation included.</span> We'll get back to you within 48 hours.
               </p>
             </form>
           </Card>

@@ -89,8 +89,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     if (resend) {
       try {
         await resend.emails.send({
-          from: 'SapientPriors <noreply@sapientpriors.com>',
-          to: to || 'raveeshupahuja@sapientpriors.com',
+          from: 'SapientPriors <onboarding@resend.dev>',
+          to: to || 'raveeshupahuja@gmail.com',
           subject: subject || `New Contact Form: ${name} from ${company}`,
           html: `
             <h2>New Contact Form Submission</h2>

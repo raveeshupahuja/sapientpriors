@@ -27,7 +27,7 @@ export default function ContactSection() {
             className="px-8"
           >
             <ArrowUp className="w-4 h-4 mr-2 rotate-180" />
-            Apply for Beta Access
+            Get in Touch for Beta
           </Button>
           <p className="text-sm text-muted-foreground mt-6">
             Or email us directly at{" "}
