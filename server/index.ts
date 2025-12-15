@@ -1,6 +1,16 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+
+// Simple log function (avoid importing from vite.ts in production)
+function log(message: string, source = "express") {
+  const formattedTime = new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+  console.log(`${formattedTime} [${source}] ${message}`);
+}
 
 const app = express();
 
@@ -64,6 +74,8 @@ export default app;
 // Only start the server when running directly (not on Vercel)
 if (!process.env.VERCEL) {
   (async () => {
+    // Dynamic import to avoid loading vite in production/serverless
+    const { setupVite, serveStatic } = await import("./vite");
     const server = await serverPromise;
 
     // importantly only setup vite in development and after
