@@ -1194,19 +1194,19 @@ export default function ProductSection() {
                 <ul className="space-y-3 text-muted-foreground">
                   <li className="flex items-start gap-2">
                     <span className="text-destructive mt-1">•</span>
-                    <span>Users repeat preferences every conversation</span>
+                    <span>Your users have to repeat the same preferences again and again</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-destructive mt-1">•</span>
-                    <span>No memory of past interactions or corrections</span>
+                    <span>Nothing carries over, so conversations feel disconnected and tasks take longer</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-destructive mt-1">•</span>
-                    <span>Each session starts from scratch</span>
+                    <span>Agents don't learn effectively from past interactions or corrections—each session starts from zero</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-destructive mt-1">•</span>
-                    <span>Frustrating, repetitive user experience</span>
+                    <span>The experience quickly becomes frustrating and repetitive</span>
                   </li>
                 </ul>
               </div>
@@ -1218,7 +1218,7 @@ export default function ProductSection() {
                 <ul className="space-y-3 text-muted-foreground">
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">✓</span>
-                    <span>Learns explicit preferences your users tell it</span>
+                    <span>Learns explicit preferences your users share</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">✓</span>
@@ -1226,11 +1226,15 @@ export default function ProductSection() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">✓</span>
-                    <span>Adapts to each user's unique style and patterns</span>
+                    <span>Applies those preferences and adapts to each user's unique patterns in real time to enable faster outcomes</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">✓</span>
-                    <span>Gets smarter with every conversation</span>
+                    <span>Handles low-level, foundational personalization out of the box—so you can build strategic differentiation on top</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary mt-1">✓</span>
+                    <span>Your users get agents that get smarter with every conversation</span>
                   </li>
                 </ul>
               </div>

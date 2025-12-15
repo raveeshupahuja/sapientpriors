@@ -2,6 +2,7 @@ import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import ProductSection from "@/components/ProductSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
+import BenchmarksSection from "@/components/BenchmarksSection";
 import CodeExampleSection from "@/components/CodeExampleSection";
 import UseCasesSection from "@/components/UseCasesSection";
 import PricingSection from "@/components/PricingSection";
@@ -35,6 +36,7 @@ export default function Home() {
       <main className="pt-16">
         <HeroSection />
         <ProductSection />
+        <BenchmarksSection />
         <HowItWorksSection />
         <UseCasesSection />
         <CaseStudySection />
